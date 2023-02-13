@@ -1,26 +1,22 @@
 import Head from 'next/head'
-import Image from 'next/image'
+import {useRouter} from 'next/router'
+import Button from '../components/common/Button'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-     <div className="bg-blue-400">
-      tailwind test
-     </div>
+    const router = useRouter();
+    
+    return (
+        <div className="container mx-auto grid justify-items-center">
+            
+            <div className="text-blue-900">
+                welcome.
+            </div>
+            <div className="text-blue-900">
+                this webpage offers some useful functions/featuers about handing map
+            </div>
+            <Button color="primary_outline" clickEvent={() => router.push("/pathDrawer")} value="Path Drawer"/>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
-  )
+        </div>
+    )
 }

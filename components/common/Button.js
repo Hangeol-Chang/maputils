@@ -17,7 +17,7 @@ export default function Button(props) {
     }
 
     return(
-        <button
+        <button onClick={(e) => {props.clickEvent(e)}}
             className={`
                 ${props.borderRadius}
 
