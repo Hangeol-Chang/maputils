@@ -5,9 +5,6 @@ export default function Input({ type, width, placeholder, onChange }) {
         sm : 'w-24',
         md : 'w-40'
     }
-    useEffect(() => {
-        console.log(onChange)
-    }, [])
 
     return (
         <input 
