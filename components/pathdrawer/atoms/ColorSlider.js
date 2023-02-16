@@ -6,7 +6,7 @@ export default function ColorSlider({ color="red" , value=50, changeColor}) {
         <div className="flex align-contents-center">
             <input id="slider" type="range" 
                 defaultValue={value}
-                onPointerUp={() => changeColor(value, color)}
+                onPointerUp={(e) => changeColor(e.target.value, color)}
                 className={`w-full cursor-pointer accent-${color}-400`}
                 max={255} min={0}
             />

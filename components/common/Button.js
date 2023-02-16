@@ -17,7 +17,7 @@ export default function Button(props) {
     }
 
     return(
-        <button onClick={(e) => {props.clickEvent(e)}}
+        <button onClick={(e) => {props.clickEvent(e.target.value)}}
             className={`
                 px-2 m-1 rounded-sm
                 ${props.borderRadius}

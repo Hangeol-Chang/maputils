@@ -42,10 +42,74 @@ export default function pathDrawer() {
     let [center, setCenter] = useState({ lat: 37.498578, lng: 127.027175 });
     let [zoom, setZoom] = useState(15);
 
+    let [lngfirst, setLngfirst] = useState(false);
+    let [hhmmddd, setHhmmddd] = useState(false);
+
+    // api로 분리할 것.
+    const convertrawCoorditoCoordi = function(coordi) {
+        let coordiString = coordi
+            .replaceAll("[", "")
+            .replaceAll("]", "")
+            .replaceAll(" ", "")
+            .replaceAll("\t", ",")
+            .replaceAll("\n", ",")
+
+        const coordiArr = coordiString.split(",").map(Number); 
+        console.log(coordiArr)
+        const len = parseInt(coordiArr.length)*2;
+        let tmpPath = []
+
+        let latidf = 0;
+        let lngidf = 1;
+        if(lngfirst) { latidf = 1; lngidf = 0; }
+        
+        for (let i = 0; i < len; i += 2) {
+            let tmplat = coordiArr[i + latidf];
+            let tmplng = coordiArr[i + lngidf];
+
+            console.log(tmplat + " " + tmplng)
+            if(hhmmddd) {
+                tmplat = parseInt(tmplat / 100) + tmplat % 100 / 60;
+                tmplng = parseInt(tmplng / 100) + tmplng % 100 / 60;
+                // tmplat = parseInt(tmplat / 100) + parseInt(tmplat % 100) / 60 + (tmplat % 1)*100 / 3600;
+                // tmplng = parseInt(tmplng / 100) + parseInt(tmplng % 100) / 60 + (tmplng % 1)*100 / 3600;
+            }
+
+            if((Math.abs(tmplat) < 1 || Math.abs(tmplng) < 1)) continue;
+            if(!tmplat || !tmplng) break;
+            
+            tmpPath.push({
+                "lat" : tmplat,
+                "lng" : tmplng
+            })
+        }
+
+        return tmpPath;
+    }
+
+    const drawPath = function(pathString) {
+        let newLine = iniOption;
+        newLine.path = convertrawCoorditoCoordi(pathString);
+
+        setOptions({...options, [idfCount] : newLine});
+        setIdfs([...idfs, idfCount]);
+        setNowIdf(idfCount);
+        setNowOption(newLine);
+
+        setIdfCount(idfCount + 1);
+
+        console.log(newLine)
+
+        if(newLine.path) {
+            setCenter({ lat : newLine.path[0].lat, lng : newLine.path[0].lng})
+        }
+    }
+
     const changeOption = function() {
         console.log("change now Option");
     }
 
+    // path의 좌표에 포커스되었을 때
     const focusCoordi = function(lat, lng) {
         setCenter({lat : lat, lng : lng})
     }
@@ -63,7 +127,10 @@ export default function pathDrawer() {
     return(
         <div className="flex mx-2 gap-2">
             <div className="flex flex-col gap-2 basis-1/5">
-                <PathInput className="bg-gray-100 p-2 h-40 rounded shadow-md" />
+                <PathInput className="bg-gray-100 p-2 h-40 rounded shadow-md"
+                    lngfirst={lngfirst} setLngfirst={setLngfirst}
+                    drawPath={drawPath}
+                />
                 <PathView className="rounded h-full shadow-md" 
                     idfs={idfs} 
                     nowIdf={nowIdf}

@@ -1,12 +1,17 @@
+import { useState } from 'react'
 import Button from '../common/Button'
 
-export default function PathInput(props) {
+export default function PathInput({className, drawPath, lngfirst, setLngfirst}) {
+    let [path, setPath] = useState('');
 
     return (
         <div className={`
-            ${props.className}
+            ${className}
         `}>
-            <textarea className="w-full outline outline-1 rounded outline-blue-200" rows="4">
+            <textarea className="w-full outline outline-1 rounded outline-blue-200" rows="4"
+                value={path}
+                onChange={(e) => setPath(e.target.value)}
+            >
 
             </textarea>
 
@@ -17,10 +22,13 @@ export default function PathInput(props) {
                 </div>
 
                 <div>
-                    <input type="checkbox" id="lngf" className="mr-1"/>
+                    <input type="checkbox" id="lngf" className="mr-1" 
+                        defaultValue={lngfirst}
+                        onChange={(e) => setLngfirst(e.target.value)}    
+                    />
                     <label for="lngf">lng first</label>
                 </div>
-                <Button color="primary_outline" clickEvent={(e) => console.log(e)} value="draw path"/>
+                <Button color="primary_outline" clickEvent={(e) => drawPath(path)} value="draw path"/>
 
             </div>
             

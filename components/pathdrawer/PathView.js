@@ -23,7 +23,10 @@ export default function PathView({className, idfs, nowIdf, nowOption, focusCoord
             </div>
             <LineController option={nowOption} setNowOption={setNowOption} />
             <hr className="mx-1 my-4"/>
-            <PathViewer path={nowOption.path} focusCoordi={focusCoordi} />
+
+            <div className="max-h-[600px] overflow-scroll">
+                <PathViewer path={nowOption.path} focusCoordi={focusCoordi} />
+            </div>
         </div>
     )
 }

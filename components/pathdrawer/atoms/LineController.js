@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Button from "../../common/Button";
 import ColorSlider from "./ColorSlider";
 
 export default function LineController({ option, delLine, setNowOption }) {
@@ -16,36 +17,33 @@ export default function LineController({ option, delLine, setNowOption }) {
     let [viewLine, setViewLine]         = useState(true);
     let [viewMarker, setViewMarker]     = useState(true);
 
-    function changeCircleRadius(val) { setCircleOption({...circleOption, radius : val}) }
+    function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseDouble(val)}) }
 
     // 색 바꾸는 함수
     const changeCircleColor = function(val, idf) {
-        if(idf == "red")        setCircleColor_r(val);
-        else if(idf == "green") setCircleColor_g(val);
-        else                    setCircleColor_b(val);
-
-        const tmpColor = "#" + 
-            ("0" + circleColor_r.toString(16)).substr(-2) + 
-            ("0" + circleColor_g.toString(16)).substr(-2) +  
-            ("0" + circleColor_b.toString(16)).substr(-2);  
+        let tmpColor = option.circleOption.fillColor;
+        let binColor = ("0" + parseInt(val).toString(16)).slice(-2);
     
-        setCircleOption({...option, fillColor : tmpColor})
+        let idx = -1;
+        if(idf == "red")        idx = 1;
+        else if(idf == "green") idx = 3;
+        else                    idx = 5;
+
+        let color = tmpColor.substring(0, idx) + binColor + tmpColor.substring(idx + 2);
+        setCircleOption({...option, fillColor : color, [idf] : val})
     }
 
     const changeLineColor = function(val, idf) {
-        let tmpColor2 = option.lineOption.strokeColor;
-        let binColor = ("0" + val.toString(16)).substr(-2);
+        let tmpColor = option.lineOption.strokeColor;
+        let binColor = ("0" + parseInt(val).toString(16)).substr(-2);
 
-        if(idf == "red")        setLineColor_r(val);
-        else if(idf == "green") setLineColor_g(val);
-        else                    setLineColor_b(val);
+        let idx = -1;
+        if(idf == "red")        idx = 1;
+        else if(idf == "green") idx = 3;
+        else                    idx = 5;
 
-        const tmpColor = "#" + 
-            ("0" + lineColor_r.toString(16)).substr(-2) + 
-            ("0" + lineColor_g.toString(16)).substr(-2) +  
-            ("0" + lineColor_b.toString(16)).substr(-2);  
-        
-        setLineOption({...option, strokeColor : tmpColor});
+        let color = tmpColor.substring(0, idx) + binColor + tmpColor.substring(idx + 2);
+        setLineOption({...option, strokeColor : color, [idf] : val});
     }
 
     // view 상태 변경 함수
@@ -70,12 +68,15 @@ export default function LineController({ option, delLine, setNowOption }) {
 
     return (
         <div className="mt-4">
-            <input id="slider" type="range" 
-                defaultValue={1}
-                onPointerUp={(e) => changeCircleRadius(e.target.value)}
-                className={`w-full cursor-pointer accent-gray-400`}
-                max={255} min={0}
-            />
+            <div className="flex">
+                <input id="slider" type="range" 
+                    defaultValue={1}
+                    onPointerUp={(e) => changeCircleRadius(e.target.value)}
+                    className={`w-full cursor-pointer accent-gray-400`}
+                    max={255} min={0}
+                />
+                <Button color="primary_outline" value="del" clickEvent={delLine}/>
+            </div>
 
             <div className="flex">
                 <div className="w-1/3">Circle_C</div>
