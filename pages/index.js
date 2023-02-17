@@ -15,7 +15,7 @@ export default function Home() {
             <div className="text-blue-900">
                 this webpage offers some useful functions/featuers about handing map
             </div>
-            <Button color="primary_outline" clickEvent={() => router.push("/pathDrawer")} value="Path Drawer"/>
+            <Button color="primary_outline" clickEvent={() => router.push("/PathDrawer")} value="Path Drawer"/>
 
         </div>
     )

@@ -8,7 +8,7 @@ export default function LineComponent({ option }) {
             <PolylineF path={option.path} options={option.lineOption} />
             {
                 option.path.map((c, idx) => (
-                    <CircleF center={c} options={option.circleOption} />
+                    <CircleF key={idx} center={c} options={option.circleOption} />
                 ))
             }   
         </>

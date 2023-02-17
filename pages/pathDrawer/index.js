@@ -4,7 +4,7 @@ import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
 
-export default function pathDrawer() {
+export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
     const iniOption = {
         path : [{lat: 37.500142, lng: 127.026444},
