@@ -10,9 +10,7 @@ export default function pathDrawer() {
         path : [{lat: 37.500142, lng: 127.026444},
             {lat: 37.498578, lng: 127.027175},
             {lat: 37.498282, lng: 127.027248}],
-        hmd : false,
-        viewArrow : false,
-        lngfirst : false,
+        viewArrow : true,
         lineOption : {
             strokeOpacity: 0.8, strokeWeight: 2,
             clickable: false, draggable: false,
@@ -105,6 +103,33 @@ export default function pathDrawer() {
         }
     }
 
+    const delLine = function() {
+        setNowOption({
+            path : [],
+            hmd : false,
+            viewArrow : false,
+            lngfirst : false,
+            lineOption : {
+                strokeOpacity: 0.8, strokeWeight: 2,
+                clickable: false, draggable: false,
+                editable: false, visible: true, zIndex: 1,
+                strokeColor: "#000",
+                red : 0, green : 0, blue : 0
+            },
+            circleOption : {
+                strokeOpacity : 0, fillOpacity: 0.4,
+                clickable: false, draggable: false,
+                editable: false, visible: true,
+                radius: 1, zIndex: 1,
+                fillColor: "#000",
+                red : 0, green : 0, blue : 0
+            }
+        });
+
+        setIdfs(idfs.filter((v) => v != nowIdf));
+        setNowIdf(-1);
+    }
+
     const changeOption = function() {
         console.log("change now Option");
     }
@@ -117,8 +142,6 @@ export default function pathDrawer() {
     const changeNow = function(idf) {
         if(idf == nowIdf) return;
 
-        console.log(idf)
-
         setOptions({...options, [nowIdf] : nowOption})
         setNowIdf(idf)
         setNowOption(options[idf])
@@ -126,16 +149,17 @@ export default function pathDrawer() {
 
     return(
         <div className="flex mx-2 gap-2">
-            <div className="flex flex-col gap-2 basis-1/5">
-                <PathInput className="bg-gray-100 p-2 h-40 rounded shadow-md"
+            <div className="flex flex-col gap-2 basis-1/5 max-w-[260px]">
+                <PathInput className="bg-gray-100 p-2 h-44 rounded shadow-md"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
                 />
-                <PathView className="rounded h-full shadow-md" 
+                <PathView className="rounded max-h-full shadow-md" 
                     idfs={idfs} 
                     nowIdf={nowIdf}
                     nowOption={nowOption}
                     setNowOption={setNowOption}
+                    delLine={delLine}
 
                     changeOption={changeOption}
                     focusCoordi={focusCoordi}

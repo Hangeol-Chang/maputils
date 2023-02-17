@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "../../common/Button";
 import ColorSlider from "./ColorSlider";
 
-export default function LineController({ option, delLine, setNowOption }) {
-    let [circleColor_r, setCircleColor_r] = useState(0);
-    let [circleColor_g, setCircleColor_g] = useState(0);
-    let [circleColor_b, setCircleColor_b] = useState(0);
-
-    let [lineColor_r, setLineColor_r] = useState(0);
-    let [lineColor_g, setLineColor_g] = useState(0);
-    let [lineColor_b, setLineColor_b] = useState(0);
+export default function LineController({ option, delLine, setNowOption, nowIdf }) {
 
     let [radius, setRadius] = useState(1);
     let [circleOption, setCircleOption] = useState(option.circleOption);
@@ -17,7 +10,7 @@ export default function LineController({ option, delLine, setNowOption }) {
     let [viewLine, setViewLine]         = useState(true);
     let [viewMarker, setViewMarker]     = useState(true);
 
-    function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseDouble(val)}) }
+    function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseFloat(val)}) }
 
     // 색 바꾸는 함수
     const changeCircleColor = function(val, idf) {
@@ -30,7 +23,7 @@ export default function LineController({ option, delLine, setNowOption }) {
         else                    idx = 5;
 
         let color = tmpColor.substring(0, idx) + binColor + tmpColor.substring(idx + 2);
-        setCircleOption({...option, fillColor : color, [idf] : val})
+        setCircleOption({...circleOption, fillColor : color, [idf] : parseInt(val)})
     }
 
     const changeLineColor = function(val, idf) {
@@ -43,7 +36,7 @@ export default function LineController({ option, delLine, setNowOption }) {
         else                    idx = 5;
 
         let color = tmpColor.substring(0, idx) + binColor + tmpColor.substring(idx + 2);
-        setLineOption({...option, strokeColor : color, [idf] : val});
+        setLineOption({...lineOption, strokeColor : color, [idf] : parseInt(val)});
     }
 
     // view 상태 변경 함수
@@ -53,7 +46,7 @@ export default function LineController({ option, delLine, setNowOption }) {
     }
 
     const changeViewMarker = function(check) {
-        setViewMarker(check);
+        setViewMarker(check); 
         setCircleOption({...circleOption, visible : check});
     }
 
@@ -64,7 +57,15 @@ export default function LineController({ option, delLine, setNowOption }) {
 
     // parent 함수 변경함수
     useEffect(() => {
-    }, [option])
+        console.log(nowIdf);
+
+        setLineOption(option.lineOption);
+        setCircleOption(option.circleOption);
+        setViewLine(option.lineOption.visible);
+        setViewMarker(option.circleOption.visible);
+
+        console.log(option);
+    }, [nowIdf])
 
     return (
         <div className="mt-4">
@@ -73,33 +74,33 @@ export default function LineController({ option, delLine, setNowOption }) {
                     defaultValue={1}
                     onPointerUp={(e) => changeCircleRadius(e.target.value)}
                     className={`w-full cursor-pointer accent-gray-400`}
-                    max={255} min={0}
+                    max={2} min={0} step={0.1}
                 />
                 <Button color="primary_outline" value="del" clickEvent={delLine}/>
             </div>
 
             <div className="flex">
                 <div className="w-1/3">Circle_C</div>
-                <ColorSlider color="red"    value={option.circleOption.red} changeColor={changeCircleColor} />
-                <ColorSlider color="green"  value={option.circleOption.green} changeColor={changeCircleColor} />
-                <ColorSlider color="blue"   value={option.circleOption.blue} changeColor={changeCircleColor} />
+                <ColorSlider color="red"    value={circleOption.red} changeColor={changeCircleColor} />
+                <ColorSlider color="green"  value={circleOption.green} changeColor={changeCircleColor} />
+                <ColorSlider color="blue"   value={circleOption.blue} changeColor={changeCircleColor} />
             </div>
             <div className="flex">
                 <div className="w-1/3">Line_C</div>
-                <ColorSlider color="red"    value={option.lineOption.red} changeColor={changeLineColor} />
-                <ColorSlider color="green"  value={option.lineOption.green} changeColor={changeLineColor} />
-                <ColorSlider color="blue"   value={option.lineOption.blue} changeColor={changeLineColor} />
+                <ColorSlider color="red"    value={lineOption.red} changeColor={changeLineColor} />
+                <ColorSlider color="green"  value={lineOption.green} changeColor={changeLineColor} />
+                <ColorSlider color="blue"   value={lineOption.blue} changeColor={changeLineColor} />
             </div>
 
 
             <div className="flex justify-between">
                 <div>
-                    <input type="checkbox" id="viewLine" className="mr-1"/>
+                    <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
                     <label for="viewLine">Line</label>
                 </div>
 
                 <div>
-                    <input type="checkbox" id="viewMarker" className="mr-1"/>
+                    <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
                     <label for="viewMarker">Marker</label>
                 </div>
 
