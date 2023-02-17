@@ -18,7 +18,8 @@ export default function Header() {
                 <div
                     className="flex title-font font-medium items-center text-gray-900 mb-1 md:mb-0"
                 >
-                    <Image alt="logo" src={prefix + logo} className="w-8 h-8 -mr-1" />
+                    
+                    {/* <Image alt="logo" src={`/public/icon.png`} width={60} height={60} className="w-8 h-8 -mr-1" /> */}
                     <span onClick={() => router.push("/")} className="ml-3 text-xl text-indigo-500 cursor-pointer">
                         Map Utils
                     </span>

@@ -15,7 +15,9 @@ export default function Home() {
             <div className="text-blue-900">
                 this webpage offers some useful functions/featuers about handing map
             </div>
-            <Button color="primary_outline" clickEvent={() => router.push("/PathDrawer")} value="Path Drawer"/>
+
+            {/* 배포시에는 아래 경로로 사용 */}
+            <Button color="primary_outline" clickEvent={() => router.push("/maputils/pathDrawer")} value="Path Drawer"/>
 
         </div>
     )
