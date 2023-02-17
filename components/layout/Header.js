@@ -1,6 +1,14 @@
 import logo from '../../public/icon.png'
+import { Menu, MenuHandler, MenuList, MenuItem, Button } from "@material-tailwind/react"
+import DistCalculator from '../utilities/DistCalculator'
+import Router, { useRouter } from 'next/router'
+import { useState } from 'react';
 
 export default function Header() {
+    const router = useRouter();
+
+    let [ viewDistCalcurator, setViewDistCalcurator ] = useState(false);
+
     return (
         <header className="shadow-md mb-2">
             <div className="container mx-auto flex flex-wrap px-5 py-2 flex-col md:flex-row items-center">
@@ -8,15 +16,26 @@ export default function Header() {
                     className="flex title-font font-medium items-center text-gray-900 mb-1 md:mb-0"
                 >
                     <img alt="logo" src={logo} className="w-8 h-8 -mr-1" />
-                    <span className="ml-3 text-xl text-indigo-500">Map Utils</span>
+                    <span onClick={() => router.push("/")} className="ml-3 text-xl text-indigo-500 cursor-pointer">
+                        Map Utils
+                    </span>
                 </div>
                 <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                    <div className="mr-5 hover:text-gray-400">
+                    <div onClick={() => router.push("/pathDrawer")} className="mr-5 hover:text-gray-400 cursor-pointer">
                         Path Drawer
                     </div>
-                    <div className="mr-5 hover:text-gray-400">
-                        m2
+
+                    <div onClick={() => setViewDistCalcurator(!viewDistCalcurator)} className="mr-5 hover:text-gray-400 cursor-pointer">
+                        dist Calcurator
                     </div>
+
+                    {
+                        viewDistCalcurator ? 
+                            <div className="z-10 absolute top-16 right-12 bg-white p-3 outline outline-1 outline-blue-200 rounded-md">
+                                <DistCalculator />
+                            </div>
+                        : <></>
+                    }
                     <div className="mr-5 hover:text-gray-400">
                         m3
                     </div>

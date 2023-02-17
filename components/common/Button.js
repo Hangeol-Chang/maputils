@@ -10,15 +10,16 @@ export default function Button(props) {
         primary_outline : {
             bgColor : 'bg-white',
             color : 'text-blue-300',
-            outline : ''
+            outline : 'outline outline-1 outline-offset-2'
         }
 
         // params : size
     }
 
     return(
-        <button onClick={(e) => {props.clickEvent(e)}}
+        <button onClick={(e) => {props.clickEvent(e.target.value)}}
             className={`
+                px-2 m-1 rounded-sm
                 ${props.borderRadius}
 
                 ${buttonConfig[props.color].bgColor}
