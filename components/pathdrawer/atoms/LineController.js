@@ -57,14 +57,11 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
 
     // parent 함수 변경함수
     useEffect(() => {
-        console.log(nowIdf);
-
         setLineOption(option.lineOption);
         setCircleOption(option.circleOption);
         setViewLine(option.lineOption.visible);
         setViewMarker(option.circleOption.visible);
 
-        console.log(option);
     }, [nowIdf])
 
     return (
@@ -81,15 +78,15 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
 
             <div className="flex">
                 <div className="w-1/3">Circle_C</div>
-                <ColorSlider color="red"    value={circleOption.red} changeColor={changeCircleColor} />
-                <ColorSlider color="green"  value={circleOption.green} changeColor={changeCircleColor} />
-                <ColorSlider color="blue"   value={circleOption.blue} changeColor={changeCircleColor} />
+                <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} />
+                <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} />
+                <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} />
             </div>
             <div className="flex">
                 <div className="w-1/3">Line_C</div>
-                <ColorSlider color="red"    value={lineOption.red} changeColor={changeLineColor} />
-                <ColorSlider color="green"  value={lineOption.green} changeColor={changeLineColor} />
-                <ColorSlider color="blue"   value={lineOption.blue} changeColor={changeLineColor} />
+                <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.red} changeColor={changeLineColor} />
+                <ColorSlider color="green" aColor="accent-green-400" value={lineOption.green} changeColor={changeLineColor} />
+                <ColorSlider color="blue"  aColor="accent-blue-400" changeColor={changeLineColor} />
             </div>
 
 

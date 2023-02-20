@@ -21,6 +21,7 @@ export default function Tab({ idf, now, changeNow }) {
         <div className={`
             ${checked}
             w-1/5 h-8 text-center align-middle
+            
             cursor-pointer
         `}
             onClick={() => changeNow(idf)}

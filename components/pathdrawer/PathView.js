@@ -9,7 +9,7 @@ export default function PathView({className, idfs, nowIdf, nowOption, focusCoord
             ${className}
             
         `}>
-            <div className="flex gap-1 justify-items-center shadow">
+            <div className="flex flex-wrap gap-1 justify-items-center shadow">
                 {
                     idfs.map((idf, idx) => (
                         <Tab key={idx} idf={idf} now={nowIdf} changeNow={changeNow}/>

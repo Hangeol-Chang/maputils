@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function ColorSlider({ color="red" , value=0, changeColor}) {
+export default function ColorSlider({ color="red" , value=0, changeColor, aColor}) {
 
     let [cvalue, setCvalue] = useState(value);
     useEffect(() => {
@@ -14,7 +14,7 @@ export default function ColorSlider({ color="red" , value=0, changeColor}) {
                 onChange={(e) => setCvalue(e.target.value)}
 
                 onPointerUp={(e) => changeColor(e.target.value, color)}
-                className={`w-full cursor-pointer accent- ${color}-400`}
+                className={`w-full cursor-pointer ${aColor}`}
                 max={255} min={0}
             />
         </div>

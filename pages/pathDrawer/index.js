@@ -27,11 +27,21 @@ export default function PathDrawer() {
             red : 255, green : 0, blue : 0
         }
     }
+
+    const focusOption = {
+        strokeOpacity : 0, fillOpacity: 0.4,
+        clickable: false, draggable: false,
+        editable: false, visible: true,
+        radius: 0.8, zIndex: 1,
+        fillColor: "#00FF00",
+    }
+    let [ focus, setFocus ] = useState({lat : 0, lng : 0 })
+
     
     // 생성된 path를 저장해놓을 변수들
-    let [idfs, setIdfs] = useState([0, 1, 2]);
-    let [idfCount, setIdfCount] = useState(3);
-    let [options, setOptions] = useState( { 0 : iniOption, 1 : iniOption, 2 : iniOption } );
+    let [idfs, setIdfs] = useState([0]);
+    let [idfCount, setIdfCount] = useState(1);
+    let [options, setOptions] = useState( { 0 : iniOption, } );
 
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useState(0);
@@ -42,8 +52,35 @@ export default function PathDrawer() {
 
     let [lngfirst, setLngfirst] = useState(false);
     let [hhmmddd, setHhmmddd] = useState(false);
+    
+    // 좌표배열을 받아서, 화살표 배열을 만들기.
+    const makeArrow = function(coordi) {
+        const len = coordi.length;
 
+        for(let i = 1; i < len; i++) {
+            // convert to radian
+            let lat1 = coordi[i].lat * Math.PI/180;
+            let lat2 = coordi[i-1].lat * Math.PI/180;
+            
+            let lng1 = coordi[i].lng * Math.PI/180;
+            let lng2 = coordi[i-1].lng * Math.PI/180;
+
+            let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
+            let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
+            
+            console.log(X, Y);
+            const theta = Math.atan2(Y, X) * 180 / Math.PI;
+            const delta = 35;
+            const t1 = theta + delta;
+            const t2 = theta - delta;
+
+            // 위에꺼 역산해서 쓰기
+        }
+
+        return {}
+    }
     // api로 분리할 것.
+    // 좌표string > 배열로 만드는 기능
     const convertrawCoorditoCoordi = function(coordi) {
         let coordiString = coordi
             .replaceAll("[", "")
@@ -53,7 +90,6 @@ export default function PathDrawer() {
             .replaceAll("\n", ",")
 
         const coordiArr = coordiString.split(",").map(Number); 
-        console.log(coordiArr)
         const len = parseInt(coordiArr.length)*2;
         let tmpPath = []
 
@@ -85,9 +121,11 @@ export default function PathDrawer() {
         return tmpPath;
     }
 
+    // 새 line을 그리기
     const drawPath = function(pathString) {
         let newLine = iniOption;
         newLine.path = convertrawCoorditoCoordi(pathString);
+        const arrows = makeArrow(newLine.path)
 
         setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
@@ -96,38 +134,47 @@ export default function PathDrawer() {
 
         setIdfCount(idfCount + 1);
 
-        console.log(newLine)
-
         if(newLine.path) {
             setCenter({ lat : newLine.path[0].lat, lng : newLine.path[0].lng})
         }
     }
 
+    // 기존 line 지우기
     const delLine = function() {
-        setNowOption({
-            path : [],
-            hmd : false,
-            viewArrow : false,
-            lngfirst : false,
-            lineOption : {
-                strokeOpacity: 0.8, strokeWeight: 2,
-                clickable: false, draggable: false,
-                editable: false, visible: true, zIndex: 1,
-                strokeColor: "#000",
-                red : 0, green : 0, blue : 0
-            },
-            circleOption : {
-                strokeOpacity : 0, fillOpacity: 0.4,
-                clickable: false, draggable: false,
-                editable: false, visible: true,
-                radius: 1, zIndex: 1,
-                fillColor: "#000",
-                red : 0, green : 0, blue : 0
-            }
-        });
+        const prevIdf = nowIdf;
+        if(idfs.length > 1) {
+            if (prevIdf != idfs[0]) setNowIdf(idfs[0]);
+            setNowOption(options[idfs[0]]);
+        }
+        else{
+            setNowIdf(-1);
+            setNowOption({
+                path : [],
+                hmd : false,
+                viewArrow : false,
+                lngfirst : false,
+                lineOption : {
+                    strokeOpacity: 0.8, strokeWeight: 2,
+                    clickable: false, draggable: false,
+                    editable: false, visible: true, zIndex: 1,
+                    strokeColor: "#000",
+                    red : 0, green : 0, blue : 0
+                },
+                circleOption : {
+                    strokeOpacity : 0, fillOpacity: 0.4,
+                    clickable: false, draggable: false,
+                    editable: false, visible: true,
+                    radius: 1, zIndex: 1,
+                    fillColor: "#000",
+                    red : 0, green : 0, blue : 0
+                }
+            });
+        }
+        setIdfs(idfs.filter((v) => v != prevIdf));
 
-        setIdfs(idfs.filter((v) => v != nowIdf));
-        setNowIdf(-1);
+        let tmpOptions = options;
+        delete tmpOptions[prevIdf];
+        setOptions(tmpOptions);
     }
 
     const changeOption = function() {
@@ -137,6 +184,7 @@ export default function PathDrawer() {
     // path의 좌표에 포커스되었을 때
     const focusCoordi = function(lat, lng) {
         setCenter({lat : lat, lng : lng})
+        setFocus({lat : lat, lng : lng})
     }
     
     const changeNow = function(idf) {
@@ -149,7 +197,7 @@ export default function PathDrawer() {
 
     return(
         <div className="flex mx-2 gap-2">
-            <div className="flex flex-col gap-2 basis-1/5 max-w-[260px]">
+            <div className="flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px]">
                 <PathInput className="bg-gray-100 p-2 h-44 rounded shadow-md"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
@@ -167,7 +215,7 @@ export default function PathDrawer() {
                 />
             </div>
 
-            <div className="bg-red-100 basis-4/5 h-screen">
+            <div className="bg-red-100 w-full h-screen">
                 <LoadScript
                         googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
                     >
@@ -176,15 +224,16 @@ export default function PathDrawer() {
                             center={center}
                             zoom={zoom}
                         >
-                        {
-                            idfs.map((idf, idx) => (
-                                idf == nowIdf ? <></>
-                                : <LineComponent key={idx} option={options[idf]} />
-                            ))
-                        }
+                            {
+                                idfs.map((idf, idx) => (
+                                    idf == nowIdf ? <></>
+                                    : <LineComponent key={idx} option={options[idf]} />
+                                ))
+                            }
 
-                        <LineComponent option={nowOption} />
-
+                            <LineComponent option={nowOption} />
+                            
+                            <CircleF center={focus} options={focusOption} />
                         </GoogleMap>
                     </LoadScript>
                 

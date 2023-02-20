@@ -17,7 +17,7 @@ export default function Home() {
             </div>
 
             {/* 배포시에는 아래 경로로 사용 */}
-            <Button color="primary_outline" clickEvent={() => router.push("/maputils/pathDrawer")} value="Path Drawer"/>
+            <Button color="primary_outline" clickEvent={() => router.push("pathDrawer")} value="Path Drawer"/>
 
         </div>
     )
