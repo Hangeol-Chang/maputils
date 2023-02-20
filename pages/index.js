@@ -6,6 +6,9 @@ import styles from '../styles/Home.module.css'
 export default function Home() {
     const router = useRouter();
     
+    // 도대체 뭔 값인지 구경좀 하자
+    console.log(process.env.NODE_ENV)
+
     return (
         <div className="container mx-auto grid justify-items-center">
             
