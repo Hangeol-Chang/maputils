@@ -10,9 +10,20 @@ export default function PathDrawer() {
         path : [{lat: 37.500142, lng: 127.026444},
             {lat: 37.498578, lng: 127.027175},
             {lat: 37.498282, lng: 127.027248}],
-        viewArrow : true,
+        arrows: [
+            [
+                { "lat": 37.4985836863302,      "lng": 127.02716677408675   },
+                { "lat": 37.498578,             "lng": 127.027175           },
+                { "lat": 37.49858767466946,     "lng": 127.0271775299745    }
+            ],
+            [
+                { "lat": 37.49828893769791,     "lng": 127.02724079803167   },
+                { "lat": 37.498282,             "lng": 127.027248           },
+                { "lat": 37.49829114046893,     "lng": 127.02725205608529   }
+            ]
+        ],
         lineOption : {
-            strokeOpacity: 0.8, strokeWeight: 2,
+            strokeOpacity: 0.8, strokeWeight: 1.5,
             clickable: false, draggable: false,
             editable: false, visible: true, zIndex: 1,
             strokeColor: "#0000FF",
@@ -25,7 +36,14 @@ export default function PathDrawer() {
             radius: 1, zIndex: 1,
             fillColor: "#FF0000",
             red : 255, green : 0, blue : 0
-        }
+        },
+        arrowOption : {
+            strokeOpacity: 0.9, strokeWeight: 1.5,
+            clickable: false, draggable: false,
+            editable: false, visible: true, zIndex: 1,
+            strokeColor: "#0000FF",
+            red : 0, green : 0, blue : 255
+        },
     }
 
     const focusOption = {
@@ -37,7 +55,6 @@ export default function PathDrawer() {
     }
     let [ focus, setFocus ] = useState({lat : 0, lng : 0 })
 
-    
     // 생성된 path를 저장해놓을 변수들
     let [idfs, setIdfs] = useState([0]);
     let [idfCount, setIdfCount] = useState(1);
@@ -56,7 +73,9 @@ export default function PathDrawer() {
     // 좌표배열을 받아서, 화살표 배열을 만들기.
     const makeArrow = function(coordi) {
         const len = coordi.length;
+        const arrowd = 0.00001;
 
+        let arrows = [];
         for(let i = 1; i < len; i++) {
             // convert to radian
             let lat1 = coordi[i].lat * Math.PI/180;
@@ -69,25 +88,42 @@ export default function PathDrawer() {
             let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
             
             console.log(X, Y);
-            const theta = Math.atan2(Y, X) * 180 / Math.PI;
-            const delta = 35;
+            // const theta = Math.atan2(Y, X) * 180 / Math.PI;
+            const theta = Math.atan2(Y, X);
+            const delta = 35 * Math.PI / 180;
+
+            // 위에꺼 역산해서 쓰기
             const t1 = theta + delta;
             const t2 = theta - delta;
 
-            // 위에꺼 역산해서 쓰기
-        }
+            const lat = coordi[i].lat;
+            const lng = coordi[i].lng;
 
-        return {}
+            const arrow = [
+                {
+                    lat : lat + Math.sin(t1) * arrowd, lng : lng + Math.cos(t1) * arrowd
+                }, {
+                    lat : lat, lng : lng
+                }, {
+                    lat : lat + Math.sin(t2) * arrowd, lng : lng + Math.cos(t2) * arrowd
+                }
+            ]
+            arrows.push(arrow)
+        }
+        return arrows
     }
     // api로 분리할 것.
     // 좌표string > 배열로 만드는 기능
     const convertrawCoorditoCoordi = function(coordi) {
         let coordiString = coordi
-            .replaceAll("[", "")
-            .replaceAll("]", "")
-            .replaceAll(" ", "")
-            .replaceAll("\t", ",")
-            .replaceAll("\n", ",")
+            .replaceAll("[", " ")
+            .replaceAll("]", " ")
+            .replaceAll("\t", " ")
+            .replaceAll("\n", " ")
+            .replace(/^\s+|\s+$/g,'')
+            .replaceAll(" ", ",");
+
+        console.log(coordiString);
 
         const coordiArr = coordiString.split(",").map(Number); 
         const len = parseInt(coordiArr.length)*2;
@@ -101,7 +137,7 @@ export default function PathDrawer() {
             let tmplat = coordiArr[i + latidf];
             let tmplng = coordiArr[i + lngidf];
 
-            console.log(tmplat + " " + tmplng)
+            // console.log(tmplat + " " + tmplng)
             if(hhmmddd) {
                 tmplat = parseInt(tmplat / 100) + tmplat % 100 / 60;
                 tmplng = parseInt(tmplng / 100) + tmplng % 100 / 60;
@@ -125,7 +161,9 @@ export default function PathDrawer() {
     const drawPath = function(pathString) {
         let newLine = iniOption;
         newLine.path = convertrawCoorditoCoordi(pathString);
-        const arrows = makeArrow(newLine.path)
+        newLine.arrows = makeArrow(newLine.path)
+
+        console.log(newLine.arrows);
 
         setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
@@ -150,6 +188,7 @@ export default function PathDrawer() {
             setNowIdf(-1);
             setNowOption({
                 path : [],
+                arrows : [],
                 hmd : false,
                 viewArrow : false,
                 lngfirst : false,

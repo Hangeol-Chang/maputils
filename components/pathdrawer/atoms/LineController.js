@@ -7,8 +7,10 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
     let [radius, setRadius] = useState(1);
     let [circleOption, setCircleOption] = useState(option.circleOption);
     let [lineOption, setLineOption]     = useState(option.lineOption);
+    let [arrowOption, setArrowOption]   = useState(option.arrowOption);
     let [viewLine, setViewLine]         = useState(true);
     let [viewMarker, setViewMarker]     = useState(true);
+    let [viewArrow, setViewArrow]       = useState(true);
 
     function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseFloat(val)}) }
 
@@ -50,10 +52,15 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
         setCircleOption({...circleOption, visible : check});
     }
 
+    const changeViewArrow = function(check) {
+        setViewArrow(check);
+        setArrowOption({...arrowOption, visible : check});
+    }
+
     // 옵션 동기처리
     useEffect(() => {
-        setNowOption({...option, lineOption, circleOption})
-    }, [lineOption, circleOption])
+        setNowOption({...option, lineOption, circleOption, arrowOption})
+    }, [lineOption, circleOption, arrowOption])
 
     // parent 함수 변경함수
     useEffect(() => {
@@ -88,7 +95,8 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                 <ColorSlider color="green" aColor="accent-green-400" value={lineOption.green} changeColor={changeLineColor} />
                 <ColorSlider color="blue"  aColor="accent-blue-400" changeColor={changeLineColor} />
             </div>
-
+            
+            {/* arrow 색 변경 추가 예정 */}
 
             <div className="flex justify-between">
                 <div>
@@ -102,10 +110,9 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                 </div>
 
                 <div>
-                    <input type="checkbox" id="viewArrow" className="mr-1"/>
+                    <input type="checkbox" id="viewArrow" checked={viewArrow} onClick={(e) => changeViewArrow(e.target.checked)} className="mr-1"/>
                     <label for="viewArrow">Arrow</label>
                 </div>
-                
             </div>
         </div>
         // <Box 
