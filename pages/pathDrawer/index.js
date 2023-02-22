@@ -32,7 +32,7 @@ export default function PathDrawer() {
         circleOption : {
             strokeOpacity : 0, fillOpacity: 0.4,
             clickable: false, draggable: false,
-            editable: false, visible: true,
+            editable: false, visible: false,
             radius: 1, zIndex: 1,
             fillColor: "#FF0000",
             red : 255, green : 0, blue : 0
@@ -46,13 +46,13 @@ export default function PathDrawer() {
         },
     }
 
-    const focusOption = {
+    let [ focusOption, setFocusOption ] = useState({
         strokeOpacity : 0, fillOpacity: 0.4,
         clickable: false, draggable: false,
         editable: false, visible: true,
         radius: 0.8, zIndex: 1,
         fillColor: "#00FF00",
-    }
+    });
     let [ focus, setFocus ] = useState({lat : 0, lng : 0 })
 
     // 생성된 path를 저장해놓을 변수들
@@ -202,7 +202,7 @@ export default function PathDrawer() {
                 circleOption : {
                     strokeOpacity : 0, fillOpacity: 0.4,
                     clickable: false, draggable: false,
-                    editable: false, visible: true,
+                    editable: false, visible: false,
                     radius: 1, zIndex: 1,
                     fillColor: "#000",
                     red : 0, green : 0, blue : 0
@@ -240,6 +240,8 @@ export default function PathDrawer() {
                 <PathInput className="bg-gray-100 p-2 h-44 rounded shadow-md"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
+
+                    focusOption={focusOption} setFocusOption={setFocusOption}
                 />
                 <PathView className="rounded max-h-full shadow-md" 
                     idfs={idfs} 

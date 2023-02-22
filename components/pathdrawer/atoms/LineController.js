@@ -9,7 +9,7 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
     let [lineOption, setLineOption]     = useState(option.lineOption);
     let [arrowOption, setArrowOption]   = useState(option.arrowOption);
     let [viewLine, setViewLine]         = useState(true);
-    let [viewMarker, setViewMarker]     = useState(true);
+    let [viewMarker, setViewMarker]     = useState(false);
     let [viewArrow, setViewArrow]       = useState(true);
 
     function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseFloat(val)}) }

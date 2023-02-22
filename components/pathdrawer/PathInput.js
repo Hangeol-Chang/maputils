@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import Button from '../common/Button'
 
-export default function PathInput({className, drawPath, lngfirst, setLngfirst}) {
+export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption}) {
     let [path, setPath] = useState('');
+
+    const changeCircleRadius = function(val) {
+        setFocusOption({...focusOption, radius : parseFloat(val)})
+    }
 
     return (
         <div className={`
@@ -31,23 +35,12 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst}) 
                 <Button color="primary_outline" clickEvent={(e) => drawPath(path)} value="draw path"/>
 
             </div>
-            
-            {/* <Box  sx={{m : 2}} >
-                    <TextField
-                        variant="outlined"
-                        value={coordi}
-                        multiline rows={3} label="Input Coordinates"
-                        sx={{width:300, height:100}}
-                        onChange={(e) => setCoordi(e.target.value)}
-                    >
-                    </TextField>
-                    
-                    <Button variant="outlined" onClick={() => addLine(coordi)}>add line</Button>
-                    <Box sx={{display : 'flex', alignItems : 'center'}}>
-                        <FormControlLabel control={<Checkbox checked={hhmmddd} onChange={(e) => setHhmmddd(e.target.checked)}/>} label="hhmm˚ddd" />
-                        <FormControlLabel control={<Checkbox checked={lngfirst} onChange={(e) => setLngfirst(e.target.checked)}/>} label="lng_first" />
-                    </Box>
-                </Box> */}
+            <input id="slider" type="range" 
+                defaultValue={1}
+                onPointerUp={(e) => changeCircleRadius(e.target.value)}
+                className={`w-full cursor-pointer accent-gray-400`}
+                max={0.5} min={0} step={0.1}
+            />            
         </div>
     )
 }
