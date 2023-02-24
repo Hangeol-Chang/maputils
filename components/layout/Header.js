@@ -1,14 +1,10 @@
-import logo from '/public/icon.png'
-import { Menu, MenuHandler, MenuList, MenuItem, Button } from "@material-tailwind/react"
 import DistCalculator from '../utilities/DistCalculator'
-import Router, { useRouter } from 'next/router'
-import { useContext, useState } from 'react';
+import { useRouter } from 'next/router'
+import { useState } from 'react';
 import Image from 'next/image'
-import MapUtilsContext from '../../context/context';
 
 export default function Header() {
     const router = useRouter();
-    const { prefix } = useContext(MapUtilsContext)
 
     let [ viewDistCalcurator, setViewDistCalcurator ] = useState(false);
 
@@ -19,7 +15,7 @@ export default function Header() {
                     className="flex title-font font-medium items-center text-gray-900 mb-1 md:mb-0"
                 >
                     
-                    {/* <Image alt="logo" src={`/public/icon.png`} width={60} height={60} className="w-8 h-8 -mr-1" /> */}
+                    <Image alt="logo" src='/icon.png'  width="64" height="64" className="w-8 h-8 -mr-1" />
                     <span onClick={() => router.push("/")} className="ml-3 text-xl text-indigo-500 cursor-pointer">
                         Map Utils
                     </span>
