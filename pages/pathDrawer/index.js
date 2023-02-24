@@ -7,6 +7,7 @@ import PathView from '../../components/pathdrawer/PathView';
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
     const iniOption = {
+        label : 'ini',
         path : [{lat: 37.500142, lng: 127.026444},
             {lat: 37.498578, lng: 127.027175},
             {lat: 37.498282, lng: 127.027248}],
@@ -57,13 +58,15 @@ export default function PathDrawer() {
 
     // 생성된 path를 저장해놓을 변수들
     let [idfs, setIdfs] = useState([0]);
-    let [idfCount, setIdfCount] = useState(1);
     let [options, setOptions] = useState( { 0 : iniOption, } );
-
+    let [idfCount, setIdfCount] = useState(1);
+    
+    
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useState(0);
+    let [label, setLabel] = useState(``);
     let [nowOption, setNowOption] = useState(options[0]);
-    
+
     let [center, setCenter] = useState({ lat: 37.498578, lng: 127.027175 });
     let [zoom, setZoom] = useState(15);
 
@@ -161,9 +164,8 @@ export default function PathDrawer() {
     const drawPath = function(pathString) {
         let newLine = iniOption;
         newLine.path = convertrawCoorditoCoordi(pathString);
-        newLine.arrows = makeArrow(newLine.path)
-
-        console.log(newLine.arrows);
+        newLine.arrows = makeArrow(newLine.path);
+        newLine.label = label ? label : idfCount;
 
         setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
@@ -237,17 +239,19 @@ export default function PathDrawer() {
     return(
         <div className="flex mx-2 gap-2">
             <div className="flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px]">
-                <PathInput className="bg-gray-100 p-2 h-44 rounded shadow-md"
+                <PathInput className="bg-gray-100 p-2 h-56 rounded shadow-md"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
 
                     focusOption={focusOption} setFocusOption={setFocusOption}
+                    setLabel={setLabel}
                 />
                 <PathView className="rounded max-h-full shadow-md" 
                     idfs={idfs} 
                     nowIdf={nowIdf}
                     nowOption={nowOption}
                     setNowOption={setNowOption}
+                    options={options}
                     delLine={delLine}
 
                     changeOption={changeOption}

@@ -3,7 +3,7 @@ import LineController from "./atoms/LineController";
 import PathViewer from "./atoms/PathViewer";
 import Tab from "./atoms/Tab";
 
-export default function PathView({className, idfs, nowIdf, nowOption, focusCoordi, changeNow, setNowOption, delLine }) {
+export default function PathView({className, idfs, nowIdf, options, nowOption, focusCoordi, changeNow, setNowOption, delLine }) {
     return (
         <div className={`
             ${className}
@@ -12,7 +12,7 @@ export default function PathView({className, idfs, nowIdf, nowOption, focusCoord
             <div className="flex flex-wrap gap-1 justify-items-center shadow">
                 {
                     idfs.map((idf, idx) => (
-                        <Tab key={idx} idf={idf} now={nowIdf} changeNow={changeNow}/>
+                        <Tab key={idx} idf={idf} label={options[idf].label} now={nowIdf} changeNow={changeNow}/>
                     ))
                 }
             </div>

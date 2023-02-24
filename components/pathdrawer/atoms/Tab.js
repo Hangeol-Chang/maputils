@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export default function Tab({ idf, now, changeNow }) {
+export default function Tab({ idf, now, changeNow, label }) {
     let [checked, setChecked] = useState(``);
 
     useEffect(() => {
@@ -20,13 +20,13 @@ export default function Tab({ idf, now, changeNow }) {
     return (
         <div className={`
             ${checked}
-            w-1/5 h-8 text-center align-middle
+            min-w-[15%] px-2 h-8 text-center align-middle
             
             cursor-pointer
         `}
             onClick={() => changeNow(idf)}
         >
-            {idf}
+            {label}
         </div>
     )
 }
