@@ -15,7 +15,7 @@ export default function Header() {
                     className="flex title-font font-medium items-center text-gray-900 mb-1 md:mb-0"
                 >
                     
-                    <Image alt="logo" src='/icon.png'  width="64" height="64" className="w-8 h-8 -mr-1" />
+                    <Image src="https://hangeol-chang.github.io/maputils/icon.png" width={40} height={40} alt="logo" />
                     <span onClick={() => router.push("/")} className="ml-3 text-xl text-indigo-500 cursor-pointer">
                         Map Utils
                     </span>

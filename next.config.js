@@ -13,7 +13,8 @@ const nextConfig = {
 if(!debug) {
   nextConfig["images"] = {
     loader: 'akamai',
-    path : `${repository}/_next/image`
+    unoptimized : true,
+    path : '/',
   }
 }
 
