@@ -7,6 +7,11 @@ const nextConfig = {
   reactStrictMode: true,
   assetPrefix: !debug ? `${repository}/` : "/", 
   trailingSlash: true,
+
+  images: {
+    loader: 'akamai',
+    path: '/',
+  }
 }
 
 module.exports = nextConfig
