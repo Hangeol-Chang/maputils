@@ -8,12 +8,10 @@ const nextConfig = {
   assetPrefix: !debug ? `${repository}/` : "/", 
   trailingSlash: true,
 
-}
-
-if(!debug) {
-  nextConfig["images"] = {
+  images : {
     loader: 'akamai',
-    path : `${repository}/_next/image`
+    path : `/`,
+    unoptimized : true
   }
 }
 

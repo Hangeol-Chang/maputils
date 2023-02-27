@@ -1,7 +1,7 @@
 import DistCalculator from '../utilities/DistCalculator'
 import { useRouter } from 'next/router'
 import { useState } from 'react';
-import Image from 'next/image'
+import Img from '../common/Image';
 
 export default function Header() {
     const router = useRouter();
@@ -15,7 +15,7 @@ export default function Header() {
                     className="flex title-font font-medium items-center text-gray-900 mb-1 md:mb-0"
                 >
                     
-                    <Image alt="logo" src='/icon.png'  width="64" height="64" className="w-8 h-8 -mr-1" />
+                    <Img alt="logo" src='/icon.png'  w="64" h="64" className="w-8 h-8 -mr-1" />
                     <span onClick={() => router.push("/")} className="ml-3 text-xl text-indigo-500 cursor-pointer">
                         Map Utils
                     </span>
