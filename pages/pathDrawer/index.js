@@ -185,37 +185,21 @@ export default function PathDrawer() {
         if(idfs.length > 1) {
             if (prevIdf != idfs[0]) setNowIdf(idfs[0]);
             setNowOption(options[idfs[0]]);
+
+            let tmpOptions = options;
+            delete tmpOptions[prevIdf];
+            setOptions(tmpOptions);
+            setIdfs(idfs.filter((v) => v != prevIdf));
         }
         else{
             setNowIdf(-1);
             setNowOption({
+                ...iniOption,
                 path : [],
-                arrows : [],
-                hmd : false,
-                viewArrow : false,
-                lngfirst : false,
-                lineOption : {
-                    strokeOpacity: 0.8, strokeWeight: 2,
-                    clickable: false, draggable: false,
-                    editable: false, visible: true, zIndex: 1,
-                    strokeColor: "#000",
-                    red : 0, green : 0, blue : 0
-                },
-                circleOption : {
-                    strokeOpacity : 0, fillOpacity: 0.4,
-                    clickable: false, draggable: false,
-                    editable: false, visible: false,
-                    radius: 1, zIndex: 1,
-                    fillColor: "#000",
-                    red : 0, green : 0, blue : 0
-                }
             });
+            setIdfs([]);
+            setOptions({});
         }
-        setIdfs(idfs.filter((v) => v != prevIdf));
-
-        let tmpOptions = options;
-        delete tmpOptions[prevIdf];
-        setOptions(tmpOptions);
     }
 
     const changeOption = function() {
