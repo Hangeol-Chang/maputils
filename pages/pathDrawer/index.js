@@ -124,7 +124,7 @@ export default function PathDrawer() {
             .replaceAll("\t", " ")
             .replaceAll("\n", " ")
             .replaceAll(",", " ")
-            .replace(/^\s+|\s+$/g,'')
+            .replace(/^\s+|\s+$/g,'').replace(/ +/g, " ")
             .replaceAll(" ", ",");
 
         console.log(coordiString);
