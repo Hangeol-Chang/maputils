@@ -123,6 +123,7 @@ export default function PathDrawer() {
             .replaceAll("]", " ")
             .replaceAll("\t", " ")
             .replaceAll("\n", " ")
+            .replaceAll(",", " ")
             .replace(/^\s+|\s+$/g,'')
             .replaceAll(" ", ",");
 
@@ -196,6 +197,7 @@ export default function PathDrawer() {
             setNowOption({
                 ...iniOption,
                 path : [],
+                arrows : [],
             });
             setIdfs([]);
             setOptions({});
