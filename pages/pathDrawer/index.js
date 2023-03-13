@@ -1,8 +1,10 @@
 import { Circle, CircleF, GoogleMap, LoadScript, Marker, MarkerF, Polyline, PolylineF } from '@react-google-maps/api'
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
+import { hoverEnableState } from '../../components/states/pathDrawerState';
 
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
@@ -54,6 +56,7 @@ export default function PathDrawer() {
         radius: 0.8, zIndex: 1,
         fillColor: "#00FF00",
     });
+    let hoverEnable = useRecoilValue(hoverEnableState);
     let [ focus, setFocus ] = useState({lat : 0, lng : 0 })
 
     // 생성된 path를 저장해놓을 변수들
@@ -208,10 +211,18 @@ export default function PathDrawer() {
         console.log("change now Option");
     }
 
-    // path의 좌표에 포커스되었을 때
-    const focusCoordi = function(lat, lng) {
+    const clickCoordi = function(lat, lng) {
         setCenter({lat : lat, lng : lng})
         setFocus({lat : lat, lng : lng})
+    }
+
+    // path의 좌표에 포커스되었을 때
+    const focusCoordi = function(lat, lng) {
+        
+        if(hoverEnable) {
+            setCenter({lat : lat, lng : lng})
+            setFocus({lat : lat, lng : lng})
+        }
     }
     
     const changeNow = function(idf) {
@@ -225,7 +236,7 @@ export default function PathDrawer() {
     return(
         <div className="flex mx-2 gap-2">
             <div className="flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px]">
-                <PathInput className="bg-gray-100 p-2 h-56 rounded shadow-md"
+                <PathInput className="bg-gray-100 p-2 h-50 rounded shadow-md"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
 
@@ -242,6 +253,7 @@ export default function PathDrawer() {
 
                     changeOption={changeOption}
                     focusCoordi={focusCoordi}
+                    clickCoordi={clickCoordi}
                     changeNow={changeNow}
                 />
             </div>

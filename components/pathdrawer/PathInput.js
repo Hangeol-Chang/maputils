@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input';
+import { useRecoilState } from 'recoil';
+import { hoverEnableState } from '../states/pathDrawerState';
 
 export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption, setLabel}) {
     let [path, setPath] = useState('');
+    let [hoverEnable, setHoverEnable] = useRecoilState(hoverEnableState);
 
     const changeCircleRadius = function(val) {
         setFocusOption({...focusOption, radius : parseFloat(val)})
@@ -37,8 +40,8 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
 
             </div>
             <div className="flex">
-                <div>
-                    pointer size
+                <div className='text-sm m-auto'>
+                    p_size
                 </div>
                 <input id="slider" type="range" 
                     defaultValue={1}
@@ -46,6 +49,12 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                     className={`w-full cursor-pointer accent-gray-400`}
                     max={0.5} min={0} step={0.1}
                 />            
+                <Button 
+                    color={hoverEnable ? "primary" : "primary_outline"} 
+                    value={hoverEnable ? "enabled" : "disabled"}
+                    clickEvent={() => setHoverEnable(!hoverEnable)}
+                    className={``}
+                />
             </div>
         </div>
     )

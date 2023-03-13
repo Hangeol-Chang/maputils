@@ -3,7 +3,7 @@ import LineController from "./atoms/LineController";
 import PathViewer from "./atoms/PathViewer";
 import Tab from "./atoms/Tab";
 
-export default function PathView({className, idfs, nowIdf, options, nowOption, focusCoordi, changeNow, setNowOption, delLine }) {
+export default function PathView({className, idfs, nowIdf, options, nowOption, clickCoordi, focusCoordi, changeNow, setNowOption, delLine }) {
     return (
         <div className={`
             ${className}
@@ -20,7 +20,7 @@ export default function PathView({className, idfs, nowIdf, options, nowOption, f
             <hr className="mx-1 my-4"/>
 
             <div className={`max-h-[700px] overflow-auto`}>
-                <PathViewer path={nowOption.path} focusCoordi={focusCoordi} />
+                <PathViewer path={nowOption.path} focusCoordi={focusCoordi} clickCoordi={clickCoordi} />
             </div>
         </div>
     )
