@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
-import { emptyOptionState, focusState, hoverEnableState, idfsState, optionsState } from '../../components/states/pathDrawerState';
+import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
 
 
@@ -26,15 +26,15 @@ export default function PathDrawer() {
     let [idfs, setIdfs] = useRecoilState(idfsState);
     let [options, setOptions] = useRecoilState(optionsState);
     let emptyOption = useRecoilValue(emptyOptionState);
-    let [idfCount, setIdfCount] = useState(1);
+    let [idfCount, setIdfCount] = useRecoilState(idfCountState);
     
     
     // view에 올릴 선택된 path의 정보
-    let [nowIdf, setNowIdf] = useState(0);
+    let [nowIdf, setNowIdf] = useRecoilState(nowIdfState);
     let [label, setLabel] = useState(``);
-    let [nowOption, setNowOption] = useState(emptyOption);
+    let [nowOption, setNowOption] = useRecoilState(nowOptionState);
 
-    let [center, setCenter] = useState({ lat: 37.498578, lng: 127.027175 });
+    let [center, setCenter] = useRecoilState(centerState);
     let [zoom, setZoom] = useState(15);
 
     let [lngfirst, setLngfirst] = useState(false);
@@ -151,11 +151,12 @@ export default function PathDrawer() {
     // 기존 line 지우기
     const delLine = function() {
         const prevIdf = nowIdf;
+
         if(idfs.length > 1) {
             if (prevIdf != idfs[0]) setNowIdf(idfs[0]);
             setNowOption(options[idfs[0]]);
 
-            let tmpOptions = options;
+            let tmpOptions = {...options};
             delete tmpOptions[prevIdf];
             setOptions(tmpOptions);
             setIdfs(idfs.filter((v) => v != prevIdf));

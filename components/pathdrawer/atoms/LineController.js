@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import Button from "../../common/Button";
+import { nowOptionState } from "../../states/pathDrawerState";
 import ColorSlider from "./ColorSlider";
 
 export default function LineController({ option, delLine, setNowOption, nowIdf }) {
 
     let [radius, setRadius] = useState(1);
     let [circleOption, setCircleOption] = useState(option.circleOption);
+
     // lineOption에 line, arrow를 통합
     let [lineOption, setLineOption]     = useState({ lineOption : option.lineOption, arrowOption : option.arrowOption });
     // let [arrowOption, setArrowOption]   = useState(option.arrowOption);
@@ -106,45 +109,62 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
     return lineOption.lineOption ? (
         <div className="mt-4">
             <div className="flex">
-                <input id="slider" type="range" 
-                    defaultValue={1}
-                    onPointerUp={(e) => changeCircleRadius(e.target.value)}
-                    className={`w-full cursor-pointer accent-gray-400`}
-                    max={2} min={0} step={0.1}
-                />
                 <Button color="primary_outline" value="del" clickEvent={delLine}/>
             </div>
 
-            <div className="flex">
-                <div className="w-1/3">Circle_C</div>
-                <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} />
-                <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} />
-                <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} />
+            <div className="flex my-2">
+                <div className="w-1/2 m-auto">
+                    <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
+                    <label for="viewMarker">Mark</label>
+                </div>
+                <div className="flex-column">
+                    <div className="flex">
+                        <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} />
+                        <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} />
+                        <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} />
+                    </div>
+                    <input id="slider" type="range" 
+                        defaultValue={1}
+                        onPointerUp={(e) => changeCircleRadius(e.target.value)}
+                        className={`w-full cursor-pointer accent-gray-400`}
+                        max={2} min={0} step={0.1}
+                    />
+                </div>
             </div>
-            <div className="flex">
-                <div className="w-1/3">Line_C</div>
-                <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.lineOption.red} changeColor={changeLineColor} />
-                <ColorSlider color="green" aColor="accent-green-400" value={lineOption.lineOption.green} changeColor={changeLineColor} />
-                <ColorSlider color="blue"  aColor="accent-blue-400" value={lineOption.lineOption.blue} changeColor={changeLineColor} />
+
+            <div className="flex my-2">
+                <div className="w-1/2">
+                    <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
+                    <label for="viewLine">Line</label>
+                </div>
+                <div className="flex-column">
+                    <div className="flex">
+                        <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.lineOption.red} changeColor={changeLineColor} />
+                        <ColorSlider color="green" aColor="accent-green-400" value={lineOption.lineOption.green} changeColor={changeLineColor} />
+                        <ColorSlider color="blue"  aColor="accent-blue-400" value={lineOption.lineOption.blue} changeColor={changeLineColor} />
+                    </div>
+                    <input id="slider" type="range" 
+                        defaultValue={1}
+                        onPointerUp={() => {}}
+                        className={`w-full cursor-pointer accent-gray-400`}
+                        max={2} min={0} step={0.1}
+                    />
+                </div>
             </div>
             
             {/* arrow 색 변경 추가 예정 */}
 
             <div className="flex justify-between">
                 <div>
-                    <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
-                    <label for="viewLine">Line</label>
-                </div>
-
-                <div>
-                    <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
-                    <label for="viewMarker">Marker</label>
-                </div>
-
-                <div>
                     <input type="checkbox" id="viewArrow" checked={viewArrow} onClick={(e) => changeViewArrow(e.target.checked)} className="mr-1"/>
                     <label for="viewArrow">Arrow</label>
                 </div>
+                <input id="slider" type="range" 
+                        defaultValue={1}
+                        onPointerUp={() => {}}
+                        className={`w-full cursor-pointer accent-gray-400`}
+                        max={2} min={0} step={0.1}
+                    />
             </div>
         </div>
     )

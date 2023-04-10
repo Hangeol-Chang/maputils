@@ -70,6 +70,11 @@ const iniOptionState = atom({
     default : iniOptionInit
 })
 
+const nowOptionState = atom({
+    key : 'nowOptionState',
+    default : emptyOptionState
+})
+
 const focusState = atom({
     key : 'focusState',
     default : { lat : 0, lng : 0 }
@@ -87,13 +92,31 @@ const optionsState = atom({
     default : {},
 })
 
-// const 
+
+const idfCountState = atom({
+    key : 'idfCountState',
+    default : 0,
+}) 
+
+const nowIdfState = atom({
+    key : 'nowIdfState',
+    default : 0,
+})
+
+const centerState = atom({
+    key : 'centerState',
+    default : { lat: 37.498578, lng: 127.027175 }
+})
 
 export { 
     hoverEnableState, 
     iniOptionState,
+    nowOptionState,
     focusState,
     idfsState,
     optionsState,
-    emptyOptionState
+    emptyOptionState,
+    idfCountState,
+    nowIdfState,
+    centerState
 };
