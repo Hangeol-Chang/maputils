@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
-import { focusState, hoverEnableState, idfsState } from '../../components/states/pathDrawerState';
+import { emptyOptionState, focusState, hoverEnableState, idfsState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
 
 
@@ -24,14 +24,15 @@ export default function PathDrawer() {
 
     // 생성된 path를 저장해놓을 변수들
     let [idfs, setIdfs] = useRecoilState(idfsState);
-    let [options, setOptions] = useState( { 0 : iniOption, } );
+    let [options, setOptions] = useRecoilState(optionsState);
+    let emptyOption = useRecoilValue(emptyOptionState);
     let [idfCount, setIdfCount] = useState(1);
     
     
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useState(0);
     let [label, setLabel] = useState(``);
-    let [nowOption, setNowOption] = useState(options[0]);
+    let [nowOption, setNowOption] = useState(emptyOption);
 
     let [center, setCenter] = useState({ lat: 37.498578, lng: 127.027175 });
     let [zoom, setZoom] = useState(15);
@@ -93,7 +94,7 @@ export default function PathDrawer() {
             .replace(/^\s+|\s+$/g,'').replace(/ +/g, " ")
             .replaceAll(" ", ",");
 
-        console.log(coordiString);
+        // console.log(coordiString);
 
         const coordiArr = coordiString.split(",").map(Number); 
         const len = parseInt(coordiArr.length)*2;
@@ -107,7 +108,6 @@ export default function PathDrawer() {
             let tmplat = coordiArr[i + latidf];
             let tmplng = coordiArr[i + lngidf];
 
-            // console.log(tmplat + " " + tmplng)
             if(hhmmddd) {
                 tmplat = parseInt(tmplat / 100) + tmplat % 100 / 60;
                 tmplng = parseInt(tmplng / 100) + tmplng % 100 / 60;
@@ -117,19 +117,21 @@ export default function PathDrawer() {
 
             if((Math.abs(tmplat) < 1 || Math.abs(tmplng) < 1)) continue;
             if(!tmplat || !tmplng) break;
-            
+
+            // console.log(tmplat, tmplng)
             tmpPath.push({
                 "lat" : tmplat,
                 "lng" : tmplng
             })
         }
-
+        
+        console.log(tmpPath)
         return tmpPath;
     }
 
     // 새 line을 그리기
     const drawPath = function(pathString) {
-        let newLine = iniOption;
+        let newLine = {...emptyOption};
         newLine.path = convertrawCoorditoCoordi(pathString);
         newLine.arrows = makeArrow(newLine.path);
         newLine.label = label ? label : idfCount;
