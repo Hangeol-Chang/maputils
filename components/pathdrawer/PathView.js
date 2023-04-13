@@ -19,7 +19,7 @@ export default function PathView({className, idfs, nowIdf, options, nowOption, c
             <LineController option={nowOption} setNowOption={setNowOption} delLine={delLine} nowIdf={nowIdf} />
             <hr className="mx-1 my-4"/>
 
-            <div className={`max-h-[700px] overflow-auto`}>
+            <div className={`max-h-[400px] overflow-auto`}>
                 <PathViewer path={nowOption.path} focusCoordi={focusCoordi} clickCoordi={clickCoordi} />
             </div>
         </div>

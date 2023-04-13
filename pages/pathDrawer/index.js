@@ -7,7 +7,6 @@ import PathView from '../../components/pathdrawer/PathView';
 import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
 
-
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
     const iniOption = useRecoilValue(iniOptionState);
@@ -136,7 +135,8 @@ export default function PathDrawer() {
         newLine.arrows = makeArrow(newLine.path);
         newLine.label = label ? label : idfCount;
 
-        setOptions({...options, [idfCount] : newLine});
+        setOptions({...options, [nowIdf] : nowOption, [idfCount] : newLine});
+        // setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
         setNowIdf(idfCount);
         setNowOption(newLine);
@@ -173,10 +173,6 @@ export default function PathDrawer() {
         }
     }
 
-    const changeOption = function() {
-        console.log("change now Option");
-    }
-
     const clickCoordi = function(lat, lng) {
         setCenter({lat : lat, lng : lng})
         setFocus({lat : lat, lng : lng})
@@ -201,29 +197,6 @@ export default function PathDrawer() {
 
     return(
         <div className="flex mx-2 gap-2">
-            <div className="flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px]">
-                <PathInput className="bg-gray-100 p-2 h-50 rounded shadow-md"
-                    lngfirst={lngfirst} setLngfirst={setLngfirst}
-                    drawPath={drawPath}
-
-                    focusOption={focusOption} setFocusOption={setFocusOption}
-                    setLabel={setLabel}
-                />
-                <PathView className="rounded max-h-full shadow-md" 
-                    idfs={idfs} 
-                    nowIdf={nowIdf}
-                    nowOption={nowOption}
-                    setNowOption={setNowOption}
-                    options={options}
-                    delLine={delLine}
-
-                    changeOption={changeOption}
-                    focusCoordi={focusCoordi}
-                    clickCoordi={clickCoordi}
-                    changeNow={changeNow}
-                />
-            </div>
-
             <div className="bg-red-100 w-full h-screen">
                 <LoadScript
                         googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
@@ -247,6 +220,34 @@ export default function PathDrawer() {
                     </LoadScript>
                 
             </div>
+            <div className=" absolute top-32 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
+                <PathInput className="bg-gray-100 p-2 h-50 rounded"
+                    lngfirst={lngfirst} setLngfirst={setLngfirst}
+                    drawPath={drawPath}
+
+                    focusOption={focusOption} setFocusOption={setFocusOption}
+                    setLabel={setLabel}
+                />
+                <PathView className="rounded max-h-full bg-white" 
+                    idfs={idfs} 
+                    nowIdf={nowIdf}
+                    nowOption={nowOption}
+                    setNowOption={setNowOption}
+                    options={options}
+                    delLine={delLine}
+
+                    focusCoordi={focusCoordi}
+                    clickCoordi={clickCoordi}
+                    changeNow={changeNow}
+                />
+            </div>
+            
+            {/* <input id="slider" type="range" 
+
+                className={`inputR`}
+                max={255} min={0}
+            /> */}
+
         </div>
     )
 }

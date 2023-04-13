@@ -26,7 +26,7 @@ const circleOptionInit = {
 const arrowOptionInit = {
     strokeOpacity: 0.9, strokeWeight: 1.5,
     clickable: false, draggable: false,
-    editable: false, visible: true, zIndex: 1,
+    editable: false, visible: false, zIndex: 1,
     strokeColor: "#0000FF",
     red : 0, green : 0, blue : 255
 };
