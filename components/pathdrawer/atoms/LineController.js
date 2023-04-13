@@ -52,6 +52,8 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                 strokeColor : color, [idf] : parseInt(val)
             } 
         });
+
+        console.log(lineOption.lineOption.strokeColor);
         // setArrowOption({...arrowOption, strokeColor : color, [idf] : parseInt(val)})
     }
 
@@ -112,10 +114,17 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                 <Button color="primary_outline" value="del" clickEvent={delLine}/>
             </div>
 
-            <div className="flex my-2">
-                <div className="w-1/2 m-auto">
-                    <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
-                    <label for="viewMarker">Mark</label>
+            <div className="my-2">
+                <div className="flex justify-between">
+                    <div className="flex">
+                        <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
+                        <label for="viewMarker">Mark</label>
+                    </div>
+
+                    <div className="flex">
+                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : circleOption.fillColor}} />
+                        <div className="text-xs my-auto"> {circleOption.fillColor} </div>
+                    </div>
                 </div>
                 <div className="flex-column">
                     <div className="flex">
@@ -126,16 +135,23 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                     <input id="slider" type="range" 
                         defaultValue={1}
                         onPointerUp={(e) => changeCircleRadius(e.target.value)}
-                        className={`w-full cursor-pointer accent-gray-400`}
+                        className={`w-full cursor-pointer accent-gray-600`}
                         max={2} min={0} step={0.1}
                     />
                 </div>
             </div>
 
-            <div className="flex my-2">
-                <div className="w-1/2">
-                    <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
-                    <label for="viewLine">Line</label>
+            <div className="my-2 ">
+                <div className="flex justify-between">
+                    <div>
+                        <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
+                        <label for="viewLine">Line</label>
+                    </div>
+
+                    <div className="flex">
+                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : lineOption.lineOption.strokeColor}} />
+                        <div className="text-xs my-auto"> {lineOption.lineOption.strokeColor} </div>
+                    </div>
                 </div>
                 <div className="flex-column">
                     <div className="flex">
@@ -146,26 +162,34 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                     <input id="slider" type="range" 
                         defaultValue={1}
                         onPointerUp={() => {}}
-                        className={`w-full cursor-pointer accent-gray-400`}
+                        className={`w-full cursor-pointer accent-gray-600`}
                         max={2} min={0} step={0.1}
                     />
                 </div>
             </div>
-            
-            {/* arrow 색 변경 추가 예정 */}
 
-            <div className="flex justify-between">
-                <div>
-                    <input type="checkbox" id="viewArrow" checked={viewArrow} onClick={(e) => changeViewArrow(e.target.checked)} className="mr-1"/>
-                    <label for="viewArrow">Arrow</label>
+            {/* arrow 색 변경 추가해야 함. */}
+            <div className="my-2">
+                <div className="flex justify-between">
+                    <div className="flex">
+                        <input type="checkbox" id="viewArrow" checked={viewArrow} onClick={(e) => changeViewArrow(e.target.checked)} className="mr-1"/>
+                        <label for="viewArrow">Arrow</label>
+                    </div>
+
+                    <div className="flex">
+                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : lineOption.arrowOption.strokeColor}} />
+                        <div className="text-xs my-auto"> {lineOption.arrowOption.strokeColor} </div>
+                    </div>
                 </div>
                 <input id="slider" type="range" 
-                        defaultValue={1}
-                        onPointerUp={() => {}}
-                        className={`w-full cursor-pointer accent-gray-400`}
-                        max={2} min={0} step={0.1}
-                    />
+                    defaultValue={1}
+                    onPointerUp={() => {}}
+                    className={`w-full cursor-pointer accent-gray-600`}
+                    max={2} min={0} step={0.1}
+                />
+
             </div>
+            
         </div>
     )
     : <></>
