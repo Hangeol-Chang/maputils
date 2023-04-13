@@ -241,12 +241,6 @@ export default function PathDrawer() {
                     changeNow={changeNow}
                 />
             </div>
-            
-            {/* <input id="slider" type="range" 
-
-                className={`inputR`}
-                max={255} min={0}
-            /> */}
 
         </div>
     )

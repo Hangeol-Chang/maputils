@@ -16,7 +16,7 @@ export default function Input({ type, width, placeholder, onChange }) {
                 ${widthConfig[width]}
                 bg-gray-50 border border-gray-300 text-gray-900 
                 text-sm rounded focus:ring-blue-500 focus:border-blue-500 
-                px-2 py-1 dark:bg-gray-700 m-2"
+                px-2 py-1 m-2"
             `}
         />
     )
