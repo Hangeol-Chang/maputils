@@ -17,6 +17,17 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
     let [viewArrow, setViewArrow]       = useState(true);
 
     function changeCircleRadius(val) { setCircleOption({...circleOption, radius : parseFloat(val)}) }
+    function changeStrokeWeight(val) { 
+        setLineOption({ 
+            lineOption : {
+                ...lineOption.lineOption,
+                strokeWeight : val
+            },
+            arrowOption : {
+                ...lineOption.arrowOption
+            }
+         }) 
+    }
 
     // 색 바꾸는 함수
     const changeCircleColor = function(val, idf) {
@@ -113,7 +124,7 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
             <div className="flex">
                 <Button color="primary_outline" value="del" clickEvent={delLine}/>
             </div>
-
+            <hr className="mx-1 my-2"/>
             <div className="my-2">
                 <div className="flex justify-between">
                     <div className="flex">
@@ -126,21 +137,28 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                         <div className="text-xs my-auto"> {circleOption.fillColor} </div>
                     </div>
                 </div>
-                <div className="flex-column">
-                    <div className="flex">
-                        <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} />
-                        <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} />
-                        <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} />
-                    </div>
-                    <input id="slider" type="range" 
-                        defaultValue={1}
-                        onPointerUp={(e) => changeCircleRadius(e.target.value)}
-                        className={`w-full cursor-pointer accent-gray-600`}
-                        max={2} min={0} step={0.1}
-                    />
-                </div>
-            </div>
 
+                {
+                    viewMarker ? 
+                        <div className="flex-column">
+                            <div className="flex">
+                                <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} max={255} min={0} step={1} />
+                                <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} max={255} min={0} step={1} />
+                                <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} max={255} min={0} step={1} />
+                            </div>
+                            {/* <input id="slider" type="range" 
+                                defaultValue={1}
+                                onPointerUp={(e) => changeCircleRadius(e.target.value)}
+                                className={`w-full cursor-pointer accent-gray-600`}
+                                max={2} min={0} step={0.1}
+                            /> */}
+
+                            <ColorSlider color="gray" aColor="accent-gray-200" value={1} changeColor={changeCircleRadius} max={2} min={0} step={0.1}/>
+                        </div>
+                    : <></>
+                }
+            </div>
+            <hr className="mx-1 my-2"/>
             <div className="my-2 ">
                 <div className="flex justify-between">
                     <div>
@@ -153,22 +171,29 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                         <div className="text-xs my-auto"> {lineOption.lineOption.strokeColor} </div>
                     </div>
                 </div>
-                <div className="flex-column">
-                    <div className="flex">
-                        <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.lineOption.red} changeColor={changeLineColor} />
-                        <ColorSlider color="green" aColor="accent-green-400" value={lineOption.lineOption.green} changeColor={changeLineColor} />
-                        <ColorSlider color="blue"  aColor="accent-blue-400" value={lineOption.lineOption.blue} changeColor={changeLineColor} />
-                    </div>
-                    <input id="slider" type="range" 
-                        defaultValue={1}
-                        onPointerUp={() => {}}
-                        className={`w-full cursor-pointer accent-gray-600`}
-                        max={2} min={0} step={0.1}
-                    />
-                </div>
+                {
+                    viewLine ?
+                        <div className="flex-column">
+                            <div className="flex">
+                                <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.lineOption.red} changeColor={changeLineColor} max={255} min={0} step={1} />
+                                <ColorSlider color="green" aColor="accent-green-400" value={lineOption.lineOption.green} changeColor={changeLineColor} max={255} min={0} step={1} />
+                                <ColorSlider color="blue"  aColor="accent-blue-400" value={lineOption.lineOption.blue} changeColor={changeLineColor} max={255} min={0} step={1} />
+                            </div>
+                            {/* <input id="slider" type="range" 
+                                defaultValue={1}
+                                onPointerUp={() => {}}
+                                className={`w-full cursor-pointer accent-gray-600`}
+                                max={2} min={0} step={0.1}
+                            /> */}
+                            <ColorSlider color="gray" aColor="accent-gray-200" value={1} changeColor={changeStrokeWeight} max={4} min={0} step={0.1}/>
+
+                        </div>
+                    : <></>
+                }
             </div>
 
             {/* arrow 색 변경 추가해야 함. */}
+            <hr className="mx-1 my-2"/>
             <div className="my-2">
                 <div className="flex justify-between">
                     <div className="flex">
@@ -181,15 +206,12 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                         <div className="text-xs my-auto"> {lineOption.arrowOption.strokeColor} </div>
                     </div>
                 </div>
-                <input id="slider" type="range" 
-                    defaultValue={1}
-                    onPointerUp={() => {}}
-                    className={`w-full cursor-pointer accent-gray-600`}
-                    max={2} min={0} step={0.1}
-                />
-
+                {
+                    viewArrow ?
+                        <ColorSlider color="gray" aColor="accent-gray-200" value={1} changeColor={() => {}} max={10} min={0} step={0.1}/>
+                    : <></>
+                }
             </div>
-            
         </div>
     )
     : <></>

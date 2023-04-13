@@ -16,9 +16,9 @@ export default function PathViewer({ path, focusCoordi, clickCoordi }) {
                             onPointerUp={() => clickCoordi(lat, lng)}
                         >
                             
-                            <td className="w-1/5 bg-gray-600 text-white outline outline-1">{idx}</td>
-                            <td className="w-2/5 px-1">{lat}</td>
-                            <td className="w-2/5">{lng}</td>
+                            <td className="w-1/5 bg-gray-600 text-white text-sm outline outline-1">{idx}</td>
+                            <td className="w-2/5 px-1 text-sm">{lat}</td>
+                            <td className="w-2/5 text-sm">{lng}</td>
                         </tr>
                     ))
                 }
