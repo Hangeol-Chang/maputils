@@ -48,7 +48,7 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                     onPointerUp={(e) => changeCircleRadius(e.target.value)}
                     className={`w-full cursor-pointer accent-gray-400`}
                     max={0.5} min={0} step={0.1}
-                />            
+                />
                 <Button 
                     color={hoverEnable ? "primary" : "primary_outline"} 
                     value={hoverEnable ? "enabled" : "disabled"}
