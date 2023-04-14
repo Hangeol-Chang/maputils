@@ -2,9 +2,12 @@ import DistCalculator from '../utilities/DistCalculator'
 import { useRouter } from 'next/router'
 import { useState } from 'react';
 import Img from '../common/Image';
+import { relativePrefixState } from '../states/state';
+import { useRecoilValue } from 'recoil';
 
 export default function Header() {
     const router = useRouter();
+    const relativePrefix = useRecoilValue(relativePrefixState);
 
     let [ viewDistCalcurator, setViewDistCalcurator ] = useState(false);
 
@@ -21,7 +24,7 @@ export default function Header() {
                     </span>
                 </div>
                 <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                    <div onClick={() => router.push("/pathDrawer")} className="mr-5 hover:text-gray-400 cursor-pointer">
+                    <div onClick={() => router.push(`${relativePrefix}/pathDrawer`)} className="mr-5 hover:text-gray-400 cursor-pointer">
                         Path Drawer
                     </div>
 

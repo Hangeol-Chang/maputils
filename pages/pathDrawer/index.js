@@ -27,7 +27,6 @@ export default function PathDrawer() {
     let emptyOption = useRecoilValue(emptyOptionState);
     let [idfCount, setIdfCount] = useRecoilState(idfCountState);
     
-    
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useRecoilState(nowIdfState);
     let [label, setLabel] = useState(``);
@@ -131,10 +130,13 @@ export default function PathDrawer() {
     // 새 line을 그리기
     const drawPath = function(pathString) {
         let newLine = {...emptyOption};
-        newLine.path = convertrawCoorditoCoordi(pathString);
+        if(!pathString) return;
+
+        newLine.path = convertrawCoorditoCoordi(pathString);        
         newLine.arrows = makeArrow(newLine.path);
         newLine.label = label ? label : idfCount;
 
+        setLabel('');
         setOptions({...options, [nowIdf] : nowOption, [idfCount] : newLine});
         // setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
@@ -233,7 +235,6 @@ export default function PathDrawer() {
                     nowIdf={nowIdf}
                     nowOption={nowOption}
                     setNowOption={setNowOption}
-                    options={options}
                     delLine={delLine}
 
                     focusCoordi={focusCoordi}
