@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input';
 import { useRecoilState } from 'recoil';
@@ -6,19 +6,45 @@ import { hoverEnableState } from '../states/pathDrawerState';
 
 export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption, setLabel}) {
     let [path, setPath] = useState('');
+    let [inputH, setInputH] = useState(10);
     let [hoverEnable, setHoverEnable] = useRecoilState(hoverEnableState);
+    
+    const textareaRef = useRef();
 
     const changeCircleRadius = function(val) {
         setFocusOption({...focusOption, radius : parseFloat(val)})
+    }
+
+    const drawPathFull = function() {
+        drawPath(path);
+        setPath('');
+    }
+    
+    const inputLeave = function() {
+        textareaRef.current.blur();
+        setInputH(10);
     }
 
     return (
         <div className={`
             ${className}
         `}>
-            <textarea className="w-full outline outline-1 rounded outline-blue-200" rows="4"
+            <Button className={"my-2"} color="primary_outline" clickEvent={(e) => drawPathFull()} value="draw path"/>
+            <textarea 
+                ref={textareaRef}
+                className={`
+                    w-full 
+                    outline outline-1 outline-blue-200 
+                    rounded p-2 text-sm
+                    h-${inputH} 
+                `} 
+                // rows="4"
                 value={path}
                 onChange={(e) => setPath(e.target.value)}
+
+                onClick={() => setInputH(40)}
+                onMouseLeave={() => inputLeave()}
+                placeholder='input path'
             >
             </textarea>
             <Input type="text" placeholder="label" width="full" onChange={(e) => setLabel(e.target.value)}/>
@@ -32,11 +58,10 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                 <div>
                     <input type="checkbox" id="lngf" className="mr-1" 
                         defaultValue={lngfirst}
-                        onChange={(e) => setLngfirst(e.target.value)}    
+                        onChange={(e) => setLngfirst(e.target.value)}
                     />
                     <label for="lngf">lng first</label>
                 </div>
-                <Button color="primary_outline" clickEvent={(e) => drawPath(path)} value="draw path"/>
 
             </div>
             <div className="flex">

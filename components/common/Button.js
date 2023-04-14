@@ -20,6 +20,7 @@ export default function Button(props) {
         <button onClick={(e) => {props.clickEvent(e.target.value)}}
             className={`
                 px-2 m-1 rounded-sm
+                ${props.className}
                 ${props.borderRadius}
 
                 ${buttonConfig[props.color].bgColor}
