@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import { useRecoilValue } from "recoil";
-import { optionsState } from "../../states/pathDrawerState";
 
 export default function Tab({ idf, now, changeNow, option }) {
     let [checked, setChecked] = useState(``);
@@ -32,9 +30,10 @@ export default function Tab({ idf, now, changeNow, option }) {
                 {option.label}
             </div>
             <div className="flex-col">
-                <div className={`w-3 h-2`} style={{backgroundColor : option.lineOption.strokeColor}} />
-                <div className={`w-3 h-2`} style={{backgroundColor : option.arrowOption.strokeColor}} />
+                {/* <div className={`w-3 h-2`} style={{backgroundColor : option.circleOption.visibie ? option.circleOption.fillColor : '#FFFFFF'}} /> */}
                 <div className={`w-3 h-2`} style={{backgroundColor : option.circleOption.fillColor}} />
+                <div className={`w-3 h-2`} style={{backgroundColor : option.lineOption.visible ? option.lineOption.strokeColor : '#FFFFFF'}} />
+                <div className={`w-3 h-2`} style={{backgroundColor : option.arrowOption.visible ? option.arrowOption.strokeColor : '#FFFFFF'}} />
             </div>
         </div>
     )

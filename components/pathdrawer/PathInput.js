@@ -6,7 +6,7 @@ import { hoverEnableState } from '../states/pathDrawerState';
 
 export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption, setLabel}) {
     let [path, setPath] = useState('');
-    let [inputH, setInputH] = useState(10);
+    let [inputH, setInputH] = useState(40);
     let [hoverEnable, setHoverEnable] = useRecoilState(hoverEnableState);
     
     const textareaRef = useRef();
@@ -22,27 +22,31 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
     
     const inputLeave = function() {
         textareaRef.current.blur();
-        setInputH(10);
+        setInputH(40);
     }
 
     return (
         <div className={`
             ${className}
         `}>
-            <Button className={"my-2"} color="primary_outline" clickEvent={(e) => drawPathFull()} value="draw path"/>
+            <div className='flex'>
+                <Button className={"my-2 ml-auto"} color="primary_outline" clickEvent={(e) => drawPathFull()} value="draw path"/>
+            </div>
             <textarea 
                 ref={textareaRef}
                 className={`
                     w-full 
                     outline outline-1 outline-blue-200 
                     rounded p-2 text-sm
-                    h-${inputH} 
                 `} 
+                style={{
+                    height : inputH
+                }}
                 // rows="4"
                 value={path}
                 onChange={(e) => setPath(e.target.value)}
 
-                onClick={() => setInputH(40)}
+                onClick={() => setInputH(200)}
                 onMouseLeave={() => inputLeave()}
                 placeholder='input path'
             >
