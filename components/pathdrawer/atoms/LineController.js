@@ -125,55 +125,60 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
                 <Button color="primary_outline" value="del" clickEvent={delLine}/>
             </div>
             <hr className="mx-1 my-2"/>
-            <div className="my-2">
-                <div className="flex justify-between">
+            <div className="my-2 flex">
+                <div className="flex-col justify-between w-1/2">
                     <div className="flex">
                         <input type="checkbox" id="viewMarker" checked={viewMarker} onClick={(e) => changeViewMarker(e.target.checked)} className="mr-1"/>
                         <label for="viewMarker">Mark</label>
                     </div>
 
-                    <div className="flex">
-                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : circleOption.fillColor}} />
-                        <div className="text-xs my-auto"> {circleOption.fillColor} </div>
-                    </div>
+                    {
+                        viewMarker ?
+                            <div 
+                                className="text-xs text-center text-white rounded rounded-sm" 
+                                style={{ backgroundColor : circleOption.fillColor}}
+                            >
+                                {circleOption.fillColor}
+                            </div>
+                        : <></>
+                    }
                 </div>
 
                 {
                     viewMarker ? 
-                        <div className="flex-column">
+                        <div className="flex-col m-auto">
                             <div className="flex">
                                 <ColorSlider color="red"   aColor="accent-red-400" value={circleOption.red} changeColor={changeCircleColor} max={255} min={0} step={1} />
                                 <ColorSlider color="green" aColor="accent-green-400" value={circleOption.green} changeColor={changeCircleColor} max={255} min={0} step={1} />
                                 <ColorSlider color="blue"  aColor="accent-blue-400" value={circleOption.blue} changeColor={changeCircleColor} max={255} min={0} step={1} />
                             </div>
-                            {/* <input id="slider" type="range" 
-                                defaultValue={1}
-                                onPointerUp={(e) => changeCircleRadius(e.target.value)}
-                                className={`w-full cursor-pointer accent-gray-600`}
-                                max={2} min={0} step={0.1}
-                            /> */}
-
                             <ColorSlider color="gray" aColor="accent-gray-200" value={1} changeColor={changeCircleRadius} max={2} min={0} step={0.1}/>
                         </div>
                     : <></>
                 }
             </div>
             <hr className="mx-1 my-2"/>
-            <div className="my-2 ">
-                <div className="flex justify-between">
+            <div className="my-2 flex">
+                <div className="flex-col justify-between w-1/2">
                     <div>
                         <input type="checkbox" id="viewLine" checked={viewLine} onClick={(e) => changeViewLine(e.target.checked)} className="mr-1"/>
                         <label for="viewLine">Line</label>
                     </div>
 
-                    <div className="flex">
-                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : lineOption.lineOption.strokeColor}} />
-                        <div className="text-xs my-auto"> {lineOption.lineOption.strokeColor} </div>
-                    </div>
+                    {
+                        viewLine ?
+                            <div 
+                                className="text-xs text-center text-white rounded rounded-sm" 
+                                style={{backgroundColor : lineOption.lineOption.strokeColor}}
+                            > 
+                                {lineOption.lineOption.strokeColor} 
+                            </div>
+                        : <></>
+                    }
                 </div>
                 {
                     viewLine ?
-                        <div className="flex-column">
+                        <div className="flex-column m-auto">
                             <div className="flex">
                                 <ColorSlider color="red"   aColor="accent-red-400" value={lineOption.lineOption.red} changeColor={changeLineColor} max={255} min={0} step={1} />
                                 <ColorSlider color="green" aColor="accent-green-400" value={lineOption.lineOption.green} changeColor={changeLineColor} max={255} min={0} step={1} />
@@ -194,21 +199,29 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
 
             {/* arrow 색 변경 추가해야 함. */}
             <hr className="mx-1 my-2"/>
-            <div className="my-2">
-                <div className="flex justify-between">
+            <div className="my-2 flex">
+                <div className="flex-col justify-between">
                     <div className="flex">
                         <input type="checkbox" id="viewArrow" checked={viewArrow} onClick={(e) => changeViewArrow(e.target.checked)} className="mr-1"/>
                         <label for="viewArrow">Arrow</label>
                     </div>
-
-                    <div className="flex">
-                        <div className={`bg-blue-100 w-10 my-2 mx-1`} style={{ backgroundColor : lineOption.arrowOption.strokeColor}} />
-                        <div className="text-xs my-auto"> {lineOption.arrowOption.strokeColor} </div>
-                    </div>
+                    
+                    {
+                        viewArrow ?
+                            <div 
+                                className="text-xs text-center text-white rounded rounded-sm"
+                                style={{backgroundColor : lineOption.arrowOption.strokeColor}}
+                            > 
+                                {lineOption.arrowOption.strokeColor} 
+                            </div>
+                        : <></>
+                    }
                 </div>
                 {
                     viewArrow ?
-                        <ColorSlider color="gray" aColor="accent-gray-200" value={1} changeColor={() => {}} max={10} min={0} step={0.1}/>
+                        <div className="flex-col m-auto">
+                            <ColorSlider className="w-full" color="gray" aColor="accent-gray-200" value={1} changeColor={() => {}} max={10} min={0} step={0.1}/>
+                        </div>
                     : <></>
                 }
             </div>
