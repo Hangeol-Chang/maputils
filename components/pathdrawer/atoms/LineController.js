@@ -4,7 +4,7 @@ import Button from "../../common/Button";
 import { nowOptionState } from "../../states/pathDrawerState";
 import ColorSlider from "./ColorSlider";
 
-export default function LineController({ option, delLine, setNowOption, nowIdf }) {
+export default function LineController({ option, setNowOption, nowIdf }) {
 
     let [radius, setRadius] = useState(1);
     let [circleOption, setCircleOption] = useState(option.circleOption);
@@ -121,9 +121,6 @@ export default function LineController({ option, delLine, setNowOption, nowIdf }
 
     return lineOption.lineOption ? (
         <div className="mt-4">
-            <div className="flex">
-                <Button color="primary_outline" value="del" clickEvent={delLine}/>
-            </div>
             <hr className="mx-1 my-2"/>
             <div className="my-2 flex">
                 <div className="flex-col justify-between w-1/2">

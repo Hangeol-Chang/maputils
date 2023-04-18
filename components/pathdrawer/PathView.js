@@ -4,12 +4,15 @@ import PathViewer from "./atoms/PathViewer";
 import Tab from "./atoms/Tab";
 import { useRecoilValue } from "recoil";
 import { optionsState } from "../states/pathDrawerState";
+import Button from "../common/Button";
 
 export default function PathView({className, idfs, nowIdf, nowOption, clickCoordi, focusCoordi, changeNow, setNowOption, delLine }) {
     let options = useRecoilValue(optionsState);
 
     return (
         <div className={`${className}`}>
+            <Button className="w-[236px] mb-2 text-sm" color="primary_outline" value="delete line" clickEvent={delLine}/>
+            
             <div className="flex flex-wrap gap-1 justify-items-center shadow">
                 {
                     idfs.map((idf, idx) => (
@@ -17,7 +20,8 @@ export default function PathView({className, idfs, nowIdf, nowOption, clickCoord
                     ))
                 }
             </div>
-            <LineController option={nowOption} setNowOption={setNowOption} delLine={delLine} nowIdf={nowIdf} />
+
+            <LineController option={nowOption} setNowOption={setNowOption} nowIdf={nowIdf} />
             <hr className="mx-1 my-4"/>
 
             <div className={`max-h-[400px] overflow-auto`}>

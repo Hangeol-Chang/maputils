@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-export default function Input({ type, width, placeholder, onChange }) {
+export default function Input({ type, width, placeholder, value, onChange }) {
     const widthConfig = {
         sm : 'w-24',
         md : 'w-40',
@@ -12,6 +12,7 @@ export default function Input({ type, width, placeholder, onChange }) {
             type={type}
             placeholder={placeholder}
             onChange={onChange}
+            value={value}
             className={`
                 ${widthConfig[width]}
                 bg-gray-50 border border-gray-300 text-gray-900 

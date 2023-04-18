@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
-import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
+import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
 
 export default function PathDrawer() {
@@ -29,7 +29,7 @@ export default function PathDrawer() {
     
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useRecoilState(nowIdfState);
-    let [label, setLabel] = useState(``);
+    let [label, setLabel] = useRecoilState(labelState);
     let [nowOption, setNowOption] = useRecoilState(nowOptionState);
 
     let [center, setCenter] = useRecoilState(centerState);
@@ -228,7 +228,6 @@ export default function PathDrawer() {
                     drawPath={drawPath}
 
                     focusOption={focusOption} setFocusOption={setFocusOption}
-                    setLabel={setLabel}
                 />
                 <PathView className="rounded max-h-full bg-white" 
                     idfs={idfs} 

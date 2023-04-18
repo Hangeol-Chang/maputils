@@ -26,7 +26,7 @@ export default function Tab({ idf, now, changeNow, option }) {
         `}
             onClick={() => changeNow(idf)}
         >
-            <div className="text-center w-full align-middle">
+            <div className="text-center w-full align-middle px-2">
                 {option.label}
             </div>
             <div className="flex-col">
