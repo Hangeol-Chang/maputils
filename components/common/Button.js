@@ -11,6 +11,11 @@ export default function Button(props) {
             bgColor : 'bg-white',
             color : 'text-blue-300',
             outline : 'outline outline-1 outline-offset-2'
+        },
+        gray : {
+            bgColor : 'bg-[#aaaaaa]',
+            color : 'text-white',
+            outline : ''
         }
 
         // params : size

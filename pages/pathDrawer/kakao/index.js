@@ -1,11 +1,11 @@
 import { Circle, CircleF, GoogleMap, LoadScript, Marker, MarkerF, Polyline, PolylineF } from '@react-google-maps/api'
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import LineComponent from '../../components/pathdrawer/LineComponent';
-import PathInput from '../../components/pathdrawer/PathInput';
-import PathView from '../../components/pathdrawer/PathView';
-import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
-import { iniOptionState } from '../../components/states/pathDrawerState';
+import LineComponent from '../../../components/pathdrawer/kakao/LineComponent';
+import PathView from '../../../components/pathdrawer/kakao/PathView';
+import PathInput from '../../../components/pathdrawer/PathInput';
+import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, nowIdfState, nowOptionState, optionsState } from '../../../components/states/pathDrawerKakaoState';
+import { iniOptionState } from '../../../components/states/pathDrawerState';
 
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
@@ -29,16 +29,70 @@ export default function PathDrawer() {
     
     // view에 올릴 선택된 path의 정보
     let [nowIdf, setNowIdf] = useRecoilState(nowIdfState);
-    let [label, setLabel] = useRecoilState(labelState);
+    let [label, setLabel] = useState(``);
     let [nowOption, setNowOption] = useRecoilState(nowOptionState);
 
     let [center, setCenter] = useRecoilState(centerState);
-    let [zoom, setZoom] = useState(15);
+    let [mapOptions, setMapOptions] = useState({
+        center: new kakao.maps.LatLng(center.lat, center.lng),
+        level: 3
+    });
+    useEffect(() => {
+        setMapOptions({
+            center : new kakao.maps.LatLng(center.lat, center.lng),
+            level : 3
+        })
+    }, [center])
+
+
+    let [mapWidth, setMapWidth]  = useState(window.innerWidth, {ssr : false} );
+    let [mapHeight,setMapHeight] = useState(window.innerHeight);
+    useEffect(() => { setMapWidth(window.innerWidth);   }, [window.innerWidth ])
+    useEffect(() => { setMapHeight(window.innerHeight); }, [window.innerHeight])
+
 
     let [lngfirst, setLngfirst] = useState(false);
     let [hhmmddd, setHhmmddd] = useState(false);
     
     // 좌표배열을 받아서, 화살표 배열을 만들기.
+    // const makeArrow = function(coordi) {
+    //     const len = coordi.length;
+    //     const arrowd = 0.00001;
+
+    //     let arrows = [];
+    //     for(let i = 1; i < len; i++) {
+    //         // convert to radian
+    //         let lat1 = coordi[i].La * Math.PI/180;
+    //         let lat2 = coordi[i-1].La * Math.PI/180;
+            
+    //         let lng1 = coordi[i].Ma * Math.PI/180;
+    //         let lng2 = coordi[i-1].Ma * Math.PI/180;
+
+    //         let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
+    //         let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
+            
+    //         console.log(X, Y);
+    //         // const theta = Math.atan2(Y, X) * 180 / Math.PI;
+    //         const theta = Math.atan2(Y, X);
+    //         const delta = 35 * Math.PI / 180;
+
+    //         // 위에꺼 역산해서 쓰기
+    //         const t1 = theta + delta;
+    //         const t2 = theta - delta;
+
+    //         const lat = coordi[i].La;
+    //         const lng = coordi[i].Ma;
+
+    //         const arrow = [
+    //                 new kakao.maps.LatLng(lat + Math.sin(t1) * arrowd, lng + Math.cos(t1) * arrowd),
+    //                 new kakao.maps.LatLng(lat, lng),
+    //                 new kakao.maps.LatLng(lat + Math.sin(t2) * arrowd, lng + Math.cos(t2) * arrowd)
+    //         ]
+    //         arrows.push(arrow)
+    //     }
+    //     return arrows
+    // }
+
     const makeArrow = function(coordi) {
         const len = coordi.length;
         const arrowd = 0.00001;
@@ -80,6 +134,7 @@ export default function PathDrawer() {
         }
         return arrows
     }
+
     // api로 분리할 것.
     // 좌표string > 배열로 만드는 기능
     const convertrawCoorditoCoordi = function(coordi) {
@@ -117,10 +172,7 @@ export default function PathDrawer() {
             if(!tmplat || !tmplng) break;
 
             // console.log(tmplat, tmplng)
-            tmpPath.push({
-                "lat" : tmplat,
-                "lng" : tmplng
-            })
+            tmpPath.push( new kakao.maps.LatLng(tmplat, tmplng))
         }
         
         console.log(tmpPath)
@@ -128,6 +180,36 @@ export default function PathDrawer() {
     }
 
     // 새 line을 그리기
+    // const drawPath = function(pathString) {
+    //     if(!pathString) return;
+    //     let newLine = {
+    //         lineOption : {...emptyOption.lineOption},
+    //         arrowOption : {...emptyOption.arrowOption},
+    //         path : [],
+    //         arrows : [],
+    //         circleOption : {...emptyOption.circleOption},
+    //     };
+
+    //     newLine.path = convertrawCoorditoCoordi(pathString);        
+    //     console.log(newLine.lineOption);
+
+    //     newLine.arrows = makeArrow(newLine.lineOption.path);
+    //     newLine.label = label ? label : idfCount;
+
+    //     setLabel('');
+    //     setOptions({...options, [nowIdf] : nowOption, [idfCount] : newLine});
+    //     // setOptions({...options, [idfCount] : newLine});
+    //     setIdfs([...idfs, idfCount]);
+    //     setNowIdf(idfCount);
+    //     setNowOption(newLine);
+
+    //     setIdfCount(idfCount + 1);
+
+    //     if(newLine.lineOption.path) {
+    //         setCenter({ lat : newLine.path[0].Ma, lng : newLine.path[0].La})
+    //     }
+    // }
+
     const drawPath = function(pathString) {
         let newLine = {...emptyOption};
         if(!pathString) return;
@@ -197,37 +279,40 @@ export default function PathDrawer() {
         setNowOption(options[idf])
     }
 
+
+    const KakaoMap=()=>{
+        useEffect(()=>{
+          var container = document.getElementById('map');
+          var map = new kakao.maps.Map(container, mapOptions);
+          }, [])
+      
+          return (
+              <div>
+                  <div id="map" style={{width: mapWidth, height: mapHeight }}></div> 
+              </div>
+          )
+      }
+      
+
     return(
         <div className="flex mx-2 gap-2">
-            <div className="bg-red-100 w-full h-screen">
-                <LoadScript
-                        googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
-                    >
-                        <GoogleMap
-                            mapContainerStyle={{width : '100%', height: '100%'}}
-                            center={center}
-                            zoom={zoom}
-                        >
-                            {
-                                idfs.map((idf, idx) => (
-                                    idf == nowIdf ? <></>
-                                    : <LineComponent key={idx} option={options[idf]} />
-                                ))
-                            }
+            <div className="bg-red-100 w-full h-40">            
+                <KakaoMap />
 
-                            <LineComponent option={nowOption} />
-                            
-                            <CircleF center={focus} options={focusOption} />
-                        </GoogleMap>
-                    </LoadScript>
-                
+                {
+                    idfs.map((idf, idx) => (
+                        <LineComponent option={options[idf]} />
+                    ))
+                }
+
             </div>
-            <div className=" absolute top-32 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
+            <div className="z-10 absolute top-16 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
                 <PathInput className="bg-gray-100 p-2 h-50 rounded"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
                     drawPath={drawPath}
 
                     focusOption={focusOption} setFocusOption={setFocusOption}
+                    setLabel={setLabel}
                 />
                 <PathView className="rounded max-h-full bg-white" 
                     idfs={idfs} 

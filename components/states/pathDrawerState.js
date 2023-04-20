@@ -108,6 +108,12 @@ const centerState = atom({
     default : { lat: 37.498578, lng: 127.027175 }
 })
 
+
+const labelState = atom({
+    key : 'atomState',
+    default : '',
+})
+
 export { 
     hoverEnableState, 
     iniOptionState,
@@ -118,5 +124,6 @@ export {
     emptyOptionState,
     idfCountState,
     nowIdfState,
-    centerState
+    centerState,
+    labelState
 };

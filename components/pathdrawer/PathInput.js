@@ -2,12 +2,16 @@ import { useRef, useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input';
 import { useRecoilState } from 'recoil';
-import { hoverEnableState } from '../states/pathDrawerState';
+import { hoverEnableState, labelState } from '../states/pathDrawerState';
 
-export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption, setLabel}) {
+export default function PathInput({className, drawPath, lngfirst, setLngfirst, focusOption, setFocusOption}) {
     let [path, setPath] = useState('');
     let [inputH, setInputH] = useState(40);
     let [hoverEnable, setHoverEnable] = useRecoilState(hoverEnableState);
+
+    let [label, setLabel] =useRecoilState(labelState);
+
+    let [extend, setExtend] = useState(false);
     
     const textareaRef = useRef();
 
@@ -23,6 +27,16 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
     const inputLeave = function() {
         textareaRef.current.blur();
         setInputH(40);
+    }
+
+    const extendControl = function() {
+        if (extend) {
+            setInputH(40);
+        }
+        else {
+            setInputH(140);
+        }
+        setExtend(!extend);
     }
 
     return (
@@ -46,13 +60,14 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                 value={path}
                 onChange={(e) => setPath(e.target.value)}
 
-                onClick={() => setInputH(200)}
-                onMouseLeave={() => inputLeave()}
+                // onClick={() => setInputH(200)}
+                // onMouseLeave={() => inputLeave()}
                 placeholder='input path'
             >
             </textarea>
-            <Input type="text" placeholder="label" width="full" onChange={(e) => setLabel(e.target.value)}/>
+            <Button className="absolute right-5" color="gray" value={extend ? "△" : "▽"} clickEvent={(e) => extendControl()}/>
 
+            <Input type="text" placeholder="label" width="full" value={label} onChange={(e) => setLabel(e.target.value)}/>
             <div className="flex justify-between">
                 {/* <div>
                     <input type="checkbox" id="hhmmddd" className="mr-1"/>
@@ -82,7 +97,7 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                     color={hoverEnable ? "primary" : "primary_outline"} 
                     value={hoverEnable ? "enabled" : "disabled"}
                     clickEvent={() => setHoverEnable(!hoverEnable)}
-                    className={``}
+                    className={`text-sm`}
                 />
             </div>
         </div>
