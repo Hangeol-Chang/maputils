@@ -109,7 +109,7 @@ export default function PathDrawer() {
             let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
             let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
             
-            console.log(X, Y);
+            // console.log(X, Y);
             // const theta = Math.atan2(Y, X) * 180 / Math.PI;
             const theta = Math.atan2(Y, X);
             const delta = 35 * Math.PI / 180;
@@ -137,6 +137,48 @@ export default function PathDrawer() {
 
     // api로 분리할 것.
     // 좌표string > 배열로 만드는 기능
+    // const convertrawCoorditoCoordi = function(coordi) {
+    //     let coordiString = coordi
+    //         .replaceAll("[", " ")
+    //         .replaceAll("]", " ")
+    //         .replaceAll("\t", " ")
+    //         .replaceAll("\n", " ")
+    //         .replaceAll(",", " ")
+    //         .replace(/^\s+|\s+$/g,'').replace(/ +/g, " ")
+    //         .replaceAll(" ", ",");
+
+    //     // console.log(coordiString);
+
+    //     const coordiArr = coordiString.split(",").map(Number); 
+    //     const len = parseInt(coordiArr.length)*2;
+    //     let tmpPath = []
+
+    //     let latidf = 0;
+    //     let lngidf = 1;
+    //     if(lngfirst) { latidf = 1; lngidf = 0; }
+        
+    //     for (let i = 0; i < len; i += 2) {
+    //         let tmplat = coordiArr[i + latidf];
+    //         let tmplng = coordiArr[i + lngidf];
+
+    //         if(hhmmddd) {
+    //             tmplat = parseInt(tmplat / 100) + tmplat % 100 / 60;
+    //             tmplng = parseInt(tmplng / 100) + tmplng % 100 / 60;
+    //             // tmplat = parseInt(tmplat / 100) + parseInt(tmplat % 100) / 60 + (tmplat % 1)*100 / 3600;
+    //             // tmplng = parseInt(tmplng / 100) + parseInt(tmplng % 100) / 60 + (tmplng % 1)*100 / 3600;
+    //         }
+
+    //         if((Math.abs(tmplat) < 1 || Math.abs(tmplng) < 1)) continue;
+    //         if(!tmplat || !tmplng) break;
+
+    //         // console.log(tmplat, tmplng)
+    //         tmpPath.push( new kakao.maps.LatLng(tmplat, tmplng))
+    //     }
+        
+    //     // console.log(tmpPath)
+    //     return tmpPath;
+    // }
+
     const convertrawCoorditoCoordi = function(coordi) {
         let coordiString = coordi
             .replaceAll("[", " ")
@@ -172,10 +214,13 @@ export default function PathDrawer() {
             if(!tmplat || !tmplng) break;
 
             // console.log(tmplat, tmplng)
-            tmpPath.push( new kakao.maps.LatLng(tmplat, tmplng))
+            tmpPath.push({
+                "lat" : tmplat,
+                "lng" : tmplng
+            })
         }
         
-        console.log(tmpPath)
+        // console.log(tmpPath)
         return tmpPath;
     }
 
@@ -226,9 +271,8 @@ export default function PathDrawer() {
         setNowOption(newLine);
 
         setIdfCount(idfCount + 1);
-
         if(newLine.path) {
-            setCenter({ lat : newLine.path[0].lat, lng : newLine.path[0].lng})
+            setCenter({ lat : newLine.path[0].Ma, lng : newLine.path[0].La})
         }
     }
 
@@ -284,8 +328,18 @@ export default function PathDrawer() {
         useEffect(()=>{
           var container = document.getElementById('map');
           var map = new kakao.maps.Map(container, mapOptions);
-          }, [])
-      
+
+          var polyline = new kakao.maps.Polyline({
+            path : [
+                new kakao.maps.LatLng(37.500142,  127.026444),
+                new kakao.maps.LatLng(33.452739313807456, 126.5709308145358),
+                new kakao.maps.LatLng(33.45178067090639, 126.5726886938753) 
+                ],
+                ...emptyOption.lineOption
+            })
+            polyline.setMap(map)
+        }, [])
+
           return (
               <div>
                   <div id="map" style={{width: mapWidth, height: mapHeight }}></div> 
@@ -301,7 +355,7 @@ export default function PathDrawer() {
 
                 {
                     idfs.map((idf, idx) => (
-                        <LineComponent option={options[idf]} />
+                        <LineComponent option={options[idf]} map={map} />
                     ))
                 }
 
