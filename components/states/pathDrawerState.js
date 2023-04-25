@@ -1,11 +1,6 @@
 
 import { atom } from 'recoil';
 
-const mapTypeState = atom({
-    key : 'mapTypeState',
-    default : 'google'
-})
-
 const hoverEnableState = atom({
     key : 'hoverEnableState',
     default : false
@@ -119,8 +114,7 @@ const labelState = atom({
     default : '',
 })
 
-export { 
-    mapTypeState,
+export {
     hoverEnableState, 
     iniOptionState,
     nowOptionState,

@@ -8,11 +8,11 @@ import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountSt
 import { iniOptionState } from '../../components/states/pathDrawerState';
 import Button from '../../components/common/Button';
 import NaverMapComp from '../../components/pathdrawer/NaverMapComp';
-import { Container as MapDiv } from 'react-naver-maps'
+import { Container as MapDiv, NavermapsProvider } from 'react-naver-maps'
 
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
-    let [mapType, setMapType] = useRecoilState(mapTypeState);
+    let [mapType, setMapType] = useState('google');
     const iniOption = useRecoilValue(iniOptionState);
 
     let [ focusOption, setFocusOption ] = useState({
@@ -140,7 +140,6 @@ export default function PathDrawer() {
         newLine.arrows = makeArrow(newLine.path);
         newLine.label = label ? label : idfCount;
 
-        setLabel('');
         setOptions({...options, [nowIdf] : nowOption, [idfCount] : newLine});
         // setOptions({...options, [idfCount] : newLine});
         setIdfs([...idfs, idfCount]);
@@ -229,9 +228,11 @@ export default function PathDrawer() {
         }
         else if (mapType == 'naver') {
             return (
-                <MapDiv style={{width : '100%', height: '100%'}}>
-                    <NaverMapComp />
-                </MapDiv>
+                <NavermapsProvider ncpClientId='an7y5ntcz5' >
+                    <MapDiv style={{width : '100%', height: '100%'}}>
+                        <NaverMapComp />
+                    </MapDiv>
+                </NavermapsProvider>
             )
         }
     }
