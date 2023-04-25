@@ -6,8 +6,9 @@ import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
 import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, mapTypeState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
-import NaverMap from '../../components/pathdrawer/NaverMap';
 import Button from '../../components/common/Button';
+import NaverMapComp from '../../components/pathdrawer/NaverMapComp';
+import { Container as MapDiv } from 'react-naver-maps'
 
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
@@ -228,7 +229,9 @@ export default function PathDrawer() {
         }
         else if (mapType == 'naver') {
             return (
-                <NaverMap />
+                <MapDiv style={{width : '100%', height: '100%'}}>
+                    <NaverMapComp />
+                </MapDiv>
             )
         }
     }
