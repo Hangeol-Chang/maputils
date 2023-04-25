@@ -32,7 +32,7 @@ export default function NaverMapComp() {
                 {
                     idfs.map((idf, idx) => (
                         idf == nowIdf ? <></>
-                        : <LineComponentNaver idf={idf} navermaps={navermaps} option={options[idf]} />
+                        : <LineComponentNaver key={idf} idf={idf} navermaps={navermaps} option={options[idf]} />
                     ))
                 }
                 <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
