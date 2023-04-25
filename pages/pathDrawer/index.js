@@ -4,11 +4,15 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
-import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
+import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, mapTypeState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
 import { iniOptionState } from '../../components/states/pathDrawerState';
+import Button from '../../components/common/Button';
+import NaverMapComp from '../../components/pathdrawer/NaverMapComp';
+import { Container as MapDiv } from 'react-naver-maps'
 
 export default function PathDrawer() {
     let [containerStyle, setContainerStyle] = useState({});
+    let [mapType, setMapType] = useRecoilState(mapTypeState);
     const iniOption = useRecoilValue(iniOptionState);
 
     let [ focusOption, setFocusOption ] = useState({
@@ -197,31 +201,59 @@ export default function PathDrawer() {
         setNowOption(options[idf])
     }
 
+    const Map = function() {
+
+        if(mapType == 'google') {
+            return (
+                <LoadScript
+                    googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
+                >
+                    <GoogleMap
+                        mapContainerStyle={{width : '100%', height: '100%'}}
+                        center={center}
+                        zoom={zoom}
+                    >
+                        {
+                            idfs.map((idf, idx) => (
+                                idf == nowIdf ? <></>
+                                : <LineComponent key={idx} option={options[idf]} />
+                            ))
+                        }
+
+                        <LineComponent option={nowOption} />
+                        
+                        <CircleF center={focus} options={focusOption} />
+                    </GoogleMap>
+                </LoadScript>
+            )
+        }
+        else if (mapType == 'naver') {
+            return (
+                <MapDiv style={{width : '100%', height: '100%'}}>
+                    <NaverMapComp />
+                </MapDiv>
+            )
+        }
+    }
+
+    const setMapTypeFunc = function(val) {
+        if (val != mapType) {
+            setMapType(val);
+        }
+    }
+
     return(
         <div className="flex mx-2 gap-2">
-            <div className="bg-red-100 w-full h-screen">
-                <LoadScript
-                        googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
-                    >
-                        <GoogleMap
-                            mapContainerStyle={{width : '100%', height: '100%'}}
-                            center={center}
-                            zoom={zoom}
-                        >
-                            {
-                                idfs.map((idf, idx) => (
-                                    idf == nowIdf ? <></>
-                                    : <LineComponent key={idx} option={options[idf]} />
-                                ))
-                            }
 
-                            <LineComponent option={nowOption} />
-                            
-                            <CircleF center={focus} options={focusOption} />
-                        </GoogleMap>
-                    </LoadScript>
-                
+            <div className="bg-red-100 w-full h-screen">
+                <Map />
             </div>
+
+            <Button className={`absolute left-2 top-2`} color={ mapType == 'google' ? `primary` : `primary_outline`} 
+                clickEvent={() => (setMapTypeFunc('google'))} value="google"/>
+            <Button className={`absolute left-2 top-8`} color={ mapType == 'naver' ? `primary` : `primary_outline`} 
+                clickEvent={() => (setMapTypeFunc('naver'))} value="naver_"/>
+
             <div className=" absolute top-32 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
                 <PathInput className="bg-gray-100 p-2 h-50 rounded"
                     lngfirst={lngfirst} setLngfirst={setLngfirst}
