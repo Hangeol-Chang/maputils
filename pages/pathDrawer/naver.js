@@ -205,7 +205,6 @@ export default function PathDrawer() {
         setNowIdf(idf)
         setNowOption(options[idf])
     }
-
     const setMapTypeFunc = function(val) {
         if (val != mapType) {
             setMapType(val);
@@ -214,33 +213,19 @@ export default function PathDrawer() {
 
     return(
         <div className="flex mx-2 gap-2">
-            <div className="bg-red-100 w-full h-screen">
-                <LoadScript
-                    googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
-                >
-                    <GoogleMap
-                        mapContainerStyle={{width : '100%', height: '100%'}}
-                        center={center}
-                        zoom={zoom}
-                    >
-                        {
-                            idfs.map((idf, idx) => (
-                                idf == nowIdf ? <></>
-                                : <LineComponent key={idx} option={options[idf]} />
-                            ))
-                        }
 
-                        <LineComponent option={nowOption} />
-                        
-                        <CircleF center={focus} options={focusOption} />
-                    </GoogleMap>
-                </LoadScript>
+            <div className="bg-red-100 w-full h-screen">
+                <NavermapsProvider ncpClientId='an7y5ntcz5' >
+                    <MapDiv style={{width : '100%', height: '100%'}}>
+                        <NaverMapComp />
+                    </MapDiv>
+                </NavermapsProvider>
             </div>
 
-            <Button className={`absolute left-2 top-2`} color={`primary`} 
+            <Button className={`absolute left-2 top-2`} color={`primary_outline`} 
                 clickEvent={() => router.push(`${relativePrefix}/pathDrawer`)} value="google"/>
-            <Button className={`absolute left-2 top-8`} color={`primary_outline`} 
-                clickEvent={() => router.push(`${relativePrefix}/pathDrawer/naver`)} value="naver_"/>
+            <Button className={`absolute left-2 top-8`} color={`primary`} 
+                clickEvent={() => router.push(`${relativePrefix}/pathDrawer/naver`)} value="naver"/>
 
             <div className=" absolute top-32 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
                 <PathInput className="bg-gray-100 p-2 h-50 rounded"
