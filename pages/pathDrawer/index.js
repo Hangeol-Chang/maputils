@@ -9,8 +9,6 @@ import { relativePrefixState } from '../../components/states/state';
 
 import { iniOptionState } from '../../components/states/pathDrawerState';
 import Button from '../../components/common/Button';
-import NaverMapComp from '../../components/pathdrawer/NaverMapComp';
-import { Container as MapDiv, NavermapsProvider } from 'react-naver-maps'
 import { useRouter } from 'next/router';
 
 export default function PathDrawer() {

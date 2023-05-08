@@ -9,6 +9,7 @@ import LineComponentNaver from "./LineComponentNaver";
 export default function NaverMapComp() {
     const navermaps = useNavermaps();
     const [mapTypeId, setMapTypeId] = useState(navermaps.MapTypeId.NORMAL);
+    const [map, setMap] = useState(null);
 
     const setMapTypeIdFunc = function(val) {
         if(mapTypeId == val) return;
@@ -23,11 +24,18 @@ export default function NaverMapComp() {
     const options = useRecoilValue(optionsState);
     const nowOption = useRecoilValue(nowOptionState);
 
+    useEffect(() => {
+        if(map) {
+            map.setCenter(center)
+        }
+    }, [center])
+
     return(
         <>
             <NaverMap 
                 mapTypeId={mapTypeId}
                 defaultCenter={new navermaps.LatLng(center.lat, center.lng)}
+                ref={setMap}
             >
                 {
                     idfs.map((idf, idx) => (

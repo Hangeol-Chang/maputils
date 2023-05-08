@@ -6,25 +6,32 @@ export default function LineComponentNaver({ idf, option, navermaps }) {
     const [arrowPath, setArrowPath] = useState([])
 
     useEffect(() => {
-        let tmppath = []
-        option.path.map((g) => {
-            tmppath.push(new navermaps.LatLng(g.lat, g.lng))
-        })
-        setPath(tmppath)
 
-        const arrows = option.arrows;
-
-        let tmparrows = [];
-        arrows.map((arrow) => {
-            let one = [] 
-            arrow.map((g) => {
-                one.push(new navermaps.LatLng(g.lat, g.lng))
+        if(path.length == 0 && option.path.length != 0) {
+            let tmppath = []
+            option.path.map((g) => {
+                tmppath.push(new navermaps.LatLng(g.lat, g.lng))
             })
-            tmparrows.push(one)
-        })
-        setArrowPath(tmparrows);
-        console.log(tmparrows);
-    }, [])
+            setPath(tmppath)
+        }
+
+        if(arrowPath.length == 0 && option.arrows.length != 0) {
+            const arrows = option.arrows;
+    
+            let tmparrows = [];
+            arrows.map((arrow) => {
+                let one = [] 
+                arrow.map((g) => {
+                    one.push(new navermaps.LatLng(g.lat, g.lng))
+                })
+                tmparrows.push(one)
+            })
+            setArrowPath(tmparrows);
+            console.log(tmparrows);
+        }
+
+        console.log(option.circleOption.visible)
+    }, [option])
 
     // useEffect(() => {
     //     if(!option) return;

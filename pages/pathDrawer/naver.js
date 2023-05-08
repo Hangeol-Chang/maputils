@@ -1,7 +1,6 @@
 import { Circle, CircleF, GoogleMap, LoadScript, Marker, MarkerF, Polyline, PolylineF } from '@react-google-maps/api'
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
 import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, mapTypeState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
@@ -10,7 +9,7 @@ import { relativePrefixState } from '../../components/states/state';
 import { iniOptionState } from '../../components/states/pathDrawerState';
 import Button from '../../components/common/Button';
 import NaverMapComp from '../../components/pathdrawer/NaverMapComp';
-import { Container as MapDiv, NavermapsProvider } from 'react-naver-maps'
+import { Container as MapDiv, NavermapsProvider, useNavermaps } from 'react-naver-maps'
 import { useRouter } from 'next/router';
 
 export default function PathDrawer() {
@@ -185,8 +184,8 @@ export default function PathDrawer() {
     }
 
     const clickCoordi = function(lat, lng) {
-        setCenter({lat : lat, lng : lng})
-        setFocus({lat : lat, lng : lng})
+        // setCenter(new navermaps.LatLng(lat, lng))
+        // setFocus(new navermaps.LatLng(lat, lng))
     }
 
     // path의 좌표에 포커스되었을 때
