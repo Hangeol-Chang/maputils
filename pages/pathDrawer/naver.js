@@ -136,6 +136,8 @@ export default function PathDrawer() {
         return tmpPath;
     }
 
+    // git push test
+
     // 새 line을 그리기
     const drawPath = function(pathString) {
         let newLine = {...emptyOption};
