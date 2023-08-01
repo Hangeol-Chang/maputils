@@ -53,6 +53,15 @@ const iniOptionInit = {
     arrowOption : arrowOptionInit,
 };
 
+const editLineState = atom({
+    key : 'editLineState',
+    default : []
+})
+const editArrowState = atom({
+    key : 'editArrowState',
+    default : []
+})
+
 const emptyOptionState = atom({
     key : 'emptyOptionState',
     default : {
@@ -125,5 +134,8 @@ export {
     idfCountState,
     nowIdfState,
     centerState,
-    labelState
+    labelState,
+
+    editLineState,
+    editArrowState
 };

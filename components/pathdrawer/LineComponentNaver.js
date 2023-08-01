@@ -33,14 +33,6 @@ export default function LineComponentNaver({ idf, option, navermaps }) {
         console.log(option.circleOption.visible)
     }, [option])
 
-    // useEffect(() => {
-    //     if(!option) return;
-
-    //     option.path.map(g => (
-    //         console.log(g)
-    //     ))
-    // }, [option])
-
     return (
         <>
             <Polyline 

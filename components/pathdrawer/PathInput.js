@@ -79,7 +79,7 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                         defaultValue={lngfirst}
                         onChange={(e) => setLngfirst(e.target.value)}
                     />
-                    <label for="lngf">lng first</label>
+                    <label >lng first</label>
                 </div>
 
             </div>

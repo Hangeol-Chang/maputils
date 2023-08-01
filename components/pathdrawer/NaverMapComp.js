@@ -1,15 +1,18 @@
-import { useRecoilSnapshot, useRecoilState, useRecoilValue } from "recoil";
-import { centerState, idfsState, nowIdfState, nowOptionState, optionsState } from "../states/pathDrawerState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { centerState, editArrowState, editLineState, idfsState, nowIdfState, nowOptionState, optionsState } from "../states/pathDrawerState";
 import { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
-import { NaverMap, Polyline, useNavermaps } from "react-naver-maps"
+import { Listener, NaverMap, Polyline, useListener, useNavermaps } from "react-naver-maps"
 import LineComponentNaver from "./LineComponentNaver";
-
+import LineComponentNaverEdit from "./LineComponentNaverEdit";
 
 export default function NaverMapComp() {
     const navermaps = useNavermaps();
     const [mapTypeId, setMapTypeId] = useState(navermaps.MapTypeId.NORMAL);
     const [map, setMap] = useState(null);
+
+    const [editLine, setEditLine] = useRecoilState(editLineState);
+    const [editArrow, seteditArrow] = useRecoilState(editArrowState);
 
     const setMapTypeIdFunc = function(val) {
         if(mapTypeId == val) return;
@@ -30,6 +33,61 @@ export default function NaverMapComp() {
         }
     }, [center])
 
+    const makeArrow = function(coordi) {
+        const len = coordi.length;
+        const arrowd = 0.00001;
+
+        let arrows = [];
+        for(let i = 1; i < len; i++) {
+            // convert to radian
+            let lat1 = coordi[i].lat * Math.PI/180;
+            let lat2 = coordi[i-1].lat * Math.PI/180;
+            
+            let lng1 = coordi[i].lng * Math.PI/180;
+            let lng2 = coordi[i-1].lng * Math.PI/180;
+
+            let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
+            let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
+            
+            console.log(X, Y);
+            // const theta = Math.atan2(Y, X) * 180 / Math.PI;
+            const theta = Math.atan2(Y, X);
+            const delta = 35 * Math.PI / 180;
+
+            // 위에꺼 역산해서 쓰기
+            const t1 = theta + delta;
+            const t2 = theta - delta;
+
+            const lat = coordi[i].lat;
+            const lng = coordi[i].lng;
+
+            const arrow = [
+                {
+                    lat : lat + Math.sin(t1) * arrowd, lng : lng + Math.cos(t1) * arrowd
+                }, {
+                    lat : lat, lng : lng
+                }, {
+                    lat : lat + Math.sin(t2) * arrowd, lng : lng + Math.cos(t2) * arrowd
+                }
+            ]
+            arrows.push(arrow)
+        }
+        return arrows
+    }
+
+    useEffect(() => {
+        seteditArrow(makeArrow(editLine));
+    }, [editLine])
+    
+
+    const mapRightClick = function(event) {
+        console.log(event.coord._lat, event.coord._lng);
+        let tmpeditline = [...editLine]
+        tmpeditline.push({lat : event.coord._lat, lng : event.coord._lng})
+
+        setEditLine(tmpeditline);
+    }
+
     return(
         <>
             <NaverMap 
@@ -37,12 +95,20 @@ export default function NaverMapComp() {
                 defaultCenter={new navermaps.LatLng(center.lat, center.lng)}
                 ref={setMap}
             >
+                <Listener 
+                    type="rightclick"
+                    listener={(e) => mapRightClick(e)}
+                />
                 {
                     idfs.map((idf, idx) => (
                         idf == nowIdf ? <></>
                         : <LineComponentNaver key={idf} idf={idf} navermaps={navermaps} option={options[idf]} />
                     ))
                 }
+                <LineComponentNaverEdit navermaps={navermaps}
+                    oripath={[]}
+                    oriArrowPath={[]}
+                />
                 <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
 
             </NaverMap>

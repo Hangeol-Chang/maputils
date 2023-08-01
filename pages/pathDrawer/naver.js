@@ -212,10 +212,14 @@ export default function PathDrawer() {
         }
     }
 
+    const maprightClick = function(event) {
+        console.log(event);
+    }
+
     return(
         <div className="flex mx-2 gap-2">
 
-            <div className="bg-red-100 w-full h-screen">
+            <div className="bg-red-100 w-full h-screen" >
                 <NavermapsProvider ncpClientId='an7y5ntcz5' >
                     <MapDiv style={{width : '100%', height: '100%'}}>
                         <NaverMapComp />
