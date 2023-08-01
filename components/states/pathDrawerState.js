@@ -114,9 +114,8 @@ const nowIdfState = atom({
 
 const centerState = atom({
     key : 'centerState',
-    default : { lat: 37.498578, lng: 127.027175 }
+    default : { lat: 37.3083909, lng: 127.1293028 }
 })
-
 
 const labelState = atom({
     key : 'atomState',
