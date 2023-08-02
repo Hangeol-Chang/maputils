@@ -9,8 +9,9 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
     let [inputH, setInputH] = useState(40);
     let [hoverEnable, setHoverEnable] = useRecoilState(hoverEnableState);
 
-    let [label, setLabel] =useRecoilState(labelState);
-
+    let [label, setLabel] = useRecoilState(labelState);
+    let [inputboxColor, setInputboxColor] = useState('#FFFFFF');
+    
     let [extend, setExtend] = useState(false);
     
     const textareaRef = useRef();
@@ -39,6 +40,30 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
         setExtend(!extend);
     }
 
+    const dragEnter = function() {
+        setInputboxColor('#AAAAAA');
+    }
+    const dragLeave = function() {
+        setInputboxColor('#FFFFFF');
+    }
+    const dragDrop = function(e) {
+        setInputboxColor('#FFFFFF');
+        e.preventDefault();
+        const filerawdata = e.dataTransfer.files[0];
+        console.log(filerawdata);
+
+        const fReader = new FileReader();
+        fReader.addEventListener('load', function(e) {
+            var text = e.target.result;
+            var decoder = new TextDecoder('utf-8');
+            var decodedText = decoder.decode(new Uint8Array(text));
+
+            // console.log(decodedText);
+            setPath(decodedText);
+        });
+        fReader.readAsArrayBuffer(filerawdata);
+    }
+
     return (
         <div className={`
             ${className}
@@ -54,7 +79,8 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                     rounded p-2 text-sm
                 `} 
                 style={{
-                    height : inputH
+                    height : inputH,
+                    backgroundColor : inputboxColor
                 }}
                 // rows="4"
                 value={path}
@@ -63,6 +89,10 @@ export default function PathInput({className, drawPath, lngfirst, setLngfirst, f
                 // onClick={() => setInputH(200)}
                 // onMouseLeave={() => inputLeave()}
                 placeholder='input path'
+
+                onDragEnter={() => dragEnter()}
+                onDragLeave={() => dragLeave()}
+                onDrop={(e) => dragDrop(e)}
             >
             </textarea>
             <Button className="absolute right-5" color="gray" value={extend ? "△" : "▽"} clickEvent={(e) => extendControl()}/>

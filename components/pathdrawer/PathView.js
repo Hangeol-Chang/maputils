@@ -3,11 +3,11 @@ import LineController from "./atoms/LineController";
 import PathViewer from "./atoms/PathViewer";
 import Tab from "./atoms/Tab";
 import { useRecoilValue } from "recoil";
-import { optionsState } from "../states/pathDrawerState";
+import { nowOptionState, optionsState } from "../states/pathDrawerState";
 import Button from "../common/Button";
 import EditPathViewer from "./atoms/EditPathViewer";
 
-export default function PathView({className, idfs, nowIdf, nowOption, clickCoordi, focusCoordi, changeNow, setNowOption, delLine }) {
+export default function PathView({className, idfs, nowIdf, nowOption, setNowOption, clickCoordi, focusCoordi, changeNow, delLine }) {
     let options = useRecoilValue(optionsState);
     const [isEdit, setIsEdit] = useState(false);
 

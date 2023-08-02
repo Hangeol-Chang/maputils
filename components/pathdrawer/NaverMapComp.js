@@ -49,7 +49,7 @@ export default function NaverMapComp() {
             let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
             let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
             
-            console.log(X, Y);
+            // console.log(X, Y);
             // const theta = Math.atan2(Y, X) * 180 / Math.PI;
             const theta = Math.atan2(Y, X);
             const delta = 35 * Math.PI / 180;
@@ -77,11 +77,10 @@ export default function NaverMapComp() {
 
     useEffect(() => {
         seteditArrow(makeArrow(editLine));
-    }, [editLine])
-    
+    }, [editLine])    
 
     const mapRightClick = function(event) {
-        console.log(event.coord._lat, event.coord._lng);
+        // console.log(event.coord._lat, event.coord._lng);
         let tmpeditline = [...editLine]
         tmpeditline.push({lat : event.coord._lat, lng : event.coord._lng})
 
@@ -101,7 +100,8 @@ export default function NaverMapComp() {
                 />
                 {
                     idfs.map((idf, idx) => (
-                        idf == nowIdf ? <></>
+                        idf == nowIdf 
+                        ? <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
                         : <LineComponentNaver key={idf} idf={idf} navermaps={navermaps} option={options[idf]} />
                     ))
                 }
@@ -109,7 +109,6 @@ export default function NaverMapComp() {
                     oripath={[]}
                     oriArrowPath={[]}
                 />
-                <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
 
             </NaverMap>
             <div ref={mapElement} style={{width : '100%', height : '100%'}}></div>
