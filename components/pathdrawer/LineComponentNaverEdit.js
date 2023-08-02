@@ -20,14 +20,14 @@ export default function LineComponentNaverEdit({ navermaps }) {
         red : 0, green : 0, blue : 255
     };
     
-    // const circleOption = {
-    //     strokeOpacity : 0, fillOpacity: 0.4,
-    //     clickable: false, draggable: false,
-    //     editable: false, visible: false,
-    //     radius: 1, zIndex: 1,
-    //     fillColor: "#FF0000",
-    //     red : 255, green : 0, blue : 0
-    // };
+    const circleOption = {
+        strokeOpacity : 0, fillOpacity: 0.4,
+        clickable: false, draggable: false,
+        editable: false, visible: true,
+        radius: 1, zIndex: 1,
+        fillColor: "#FF0000",
+        red : 255, green : 0, blue : 0
+    };
     
     // const arrowOption = {
     //     strokeOpacity: 0.9, strokeWeight: 1.5,
@@ -45,8 +45,9 @@ export default function LineComponentNaverEdit({ navermaps }) {
             });
             setPath(tmppath)
         }
-
-        console.log(oriPath)
+        else {
+            setPath([new navermaps.LatLng(34.44, 127.89)]);
+        }
     }, [oriPath])
 
     useEffect(() => {
@@ -70,21 +71,19 @@ export default function LineComponentNaverEdit({ navermaps }) {
                 strokeColor={lineOption.strokeColor}
                 strokeWeight={lineOption.strokeWeight}
                 strokeOpacity={lineOption.strokeOpacity}
-                visible={lineOption.visible}
             />
 
-            {/* {
+            {
                 path.map((coordi) => {
                     <Circle
                         center={coordi}
-                        radius={circleOption.radius}
+                        radius={circleOption}
                         fillColor={circleOption.fillColor}
                         fillOpacity={circleOption.fillOpacity}
-                        visible={circleOption.visible}
                     />
                 })
             }
-            {
+            {/* {
                 arrowPath.map((arrows) => {
                     <Polyline
                         path={arrows}
