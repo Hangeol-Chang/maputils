@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import Button from "../../common/Button";
 import { editLineState } from "../../states/pathDrawerState";
 
 export default function EditPathViewer({ focusCoordi, clickCoordi }) {
     const [mounted, setMounted] = useState(false);
-    const path = useRecoilValue(editLineState);
+    const [path, setPath] = useRecoilState(editLineState);
     const [filename, setFilename] = useState('path');
 
     const exportPath = function() {
@@ -28,6 +28,10 @@ export default function EditPathViewer({ focusCoordi, clickCoordi }) {
         document.body.removeChild(element);
     }
 
+    const resetPath = function() {
+        setPath([]);
+    }
+
     useEffect(() => { setMounted(true) }, [])
 
     return mounted ? (
@@ -35,6 +39,7 @@ export default function EditPathViewer({ focusCoordi, clickCoordi }) {
             <div className="flex w-fit">
                 <input className="w-1/2 border-2 rounded" value={filename} onChange={(e) => setFilename(e.target.value)}/>
                 <Button className={`text-sm`} color='primary_outline' value='export' clickEvent={exportPath}/>
+                <Button className={`text-sm`} color='primary_outline' value='reset' clickEvent={resetPath}/>
             </div>
 
             <table className="w-full" >

@@ -49,7 +49,7 @@ export default function NaverMapComp() {
             let X = Math.cos(lat2) * Math.sin(lng2 - lng1);
             let Y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
             
-            console.log(X, Y);
+            // console.log(X, Y);
             // const theta = Math.atan2(Y, X) * 180 / Math.PI;
             const theta = Math.atan2(Y, X);
             const delta = 35 * Math.PI / 180;
@@ -80,7 +80,7 @@ export default function NaverMapComp() {
     }, [editLine])    
 
     const mapRightClick = function(event) {
-        console.log(event.coord._lat, event.coord._lng);
+        // console.log(event.coord._lat, event.coord._lng);
         let tmpeditline = [...editLine]
         tmpeditline.push({lat : event.coord._lat, lng : event.coord._lng})
 

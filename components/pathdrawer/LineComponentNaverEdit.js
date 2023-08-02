@@ -45,8 +45,9 @@ export default function LineComponentNaverEdit({ navermaps }) {
             });
             setPath(tmppath)
         }
-
-        console.log(oriPath)
+        else {
+            setPath([new navermaps.LatLng(34.44, 127.89)]);
+        }
     }, [oriPath])
 
     useEffect(() => {
