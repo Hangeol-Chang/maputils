@@ -77,8 +77,7 @@ export default function NaverMapComp() {
 
     useEffect(() => {
         seteditArrow(makeArrow(editLine));
-    }, [editLine])
-    
+    }, [editLine])    
 
     const mapRightClick = function(event) {
         console.log(event.coord._lat, event.coord._lng);
@@ -101,7 +100,8 @@ export default function NaverMapComp() {
                 />
                 {
                     idfs.map((idf, idx) => (
-                        idf == nowIdf ? <></>
+                        idf == nowIdf 
+                        ? <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
                         : <LineComponentNaver key={idf} idf={idf} navermaps={navermaps} option={options[idf]} />
                     ))
                 }
@@ -109,7 +109,6 @@ export default function NaverMapComp() {
                     oripath={[]}
                     oriArrowPath={[]}
                 />
-                <LineComponentNaver idf={nowIdf} navermaps={navermaps} option={nowOption} />
 
             </NaverMap>
             <div ref={mapElement} style={{width : '100%', height : '100%'}}></div>

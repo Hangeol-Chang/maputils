@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react"
 import { Circle, Marker, Polyline } from "react-naver-maps"
+import { useRecoilValue } from "recoil"
+import { nowIdfState } from "../states/pathDrawerState"
 
 export default function LineComponentNaver({ idf, option, navermaps }) {
     const [path, setPath] = useState([])
     const [arrowPath, setArrowPath] = useState([])
 
-    useEffect(() => {
+    const nowIdf = useRecoilValue(nowIdfState);
 
+    useEffect(() => {
         if(path.length == 0 && option.path.length != 0) {
             let tmppath = []
             option.path.map((g) => {
                 tmppath.push(new navermaps.LatLng(g.lat, g.lng))
             })
             setPath(tmppath)
-        }
+        } 
 
         if(arrowPath.length == 0 && option.arrows.length != 0) {
             const arrows = option.arrows;
@@ -27,10 +30,7 @@ export default function LineComponentNaver({ idf, option, navermaps }) {
                 tmparrows.push(one)
             })
             setArrowPath(tmparrows);
-            console.log(tmparrows);
         }
-
-        console.log(option.circleOption.visible)
     }, [option])
 
     return (
