@@ -45,6 +45,8 @@ export default function PathDrawer() {
 
     let [lngfirst, setLngfirst] = useState(false);
     let [hhmmddd, setHhmmddd] = useState(false);
+
+    let [contentHeight, setContentHeight] = useState(0);
     
     // 좌표배열을 받아서, 화살표 배열을 만들기.
     const makeArrow = function(coordi) {
@@ -210,9 +212,26 @@ export default function PathDrawer() {
         }
     }
 
+    const handleResize = function() {
+        setContentHeight(window.innerHeight - 80);
+    }
+
+    useEffect(() => {
+        setContentHeight(window.innerHeight - 80);    
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [])
+
     return(
         <div className="flex mx-2 gap-2">
-            <div className="bg-red-100 w-full h-screen">
+
+            <div className="bg-red-100 w-full"
+                style={{
+                    height : contentHeight
+                }}
+            >
                 <LoadScript
                     googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
                 >
