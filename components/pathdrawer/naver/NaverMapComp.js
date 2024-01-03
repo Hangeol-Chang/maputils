@@ -1,10 +1,10 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { centerState, editArrowState, editLineState, idfsState, nowIdfState, nowOptionState, optionsState } from "../states/pathDrawerState";
+import { centerState, editArrowState, editLineState, idfsState, nowIdfState, nowOptionState, optionsState } from "../../states/pathDrawerState";
 import { useEffect, useRef, useState } from "react";
-import Button from "../common/Button";
+import Button from "../../common/Button";
 import { Listener, NaverMap, Polyline, useListener, useNavermaps } from "react-naver-maps"
-import LineComponentNaver from "./LineComponentNaver";
-import LineComponentNaverEdit from "./LineComponentNaverEdit";
+import LineComponentNaver from "../LineComponentNaver";
+import LineComponentNaverEdit from "../LineComponentNaverEdit";
 
 export default function NaverMapComp() {
     const navermaps = useNavermaps();

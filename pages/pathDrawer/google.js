@@ -1,6 +1,7 @@
 import { Circle, CircleF, GoogleMap, LoadScript, Marker, MarkerF, Polyline, PolylineF } from '@react-google-maps/api'
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import LineComponent from '../../components/pathdrawer/LineComponent';
 import PathInput from '../../components/pathdrawer/PathInput';
 import PathView from '../../components/pathdrawer/PathView';
 import { centerState, emptyOptionState, focusState, hoverEnableState, idfCountState, idfsState, labelState, mapTypeState, nowIdfState, nowOptionState, optionsState } from '../../components/states/pathDrawerState';
@@ -8,8 +9,6 @@ import { relativePrefixState } from '../../components/states/state';
 
 import { iniOptionState } from '../../components/states/pathDrawerState';
 import Button from '../../components/common/Button';
-import NaverMapComp from '../../components/pathdrawer/naver/NaverMapComp';
-import { Container as MapDiv, NavermapsProvider, useNavermaps } from 'react-naver-maps'
 import { useRouter } from 'next/router';
 
 export default function PathDrawer() {
@@ -46,9 +45,9 @@ export default function PathDrawer() {
 
     let [lngfirst, setLngfirst] = useState(false);
     let [hhmmddd, setHhmmddd] = useState(false);
-    
-    let [contentHeight, setContentHeight] = useState(0);
 
+    let [contentHeight, setContentHeight] = useState(0);
+    
     // 좌표배열을 받아서, 화살표 배열을 만들기.
     const makeArrow = function(coordi) {
         const len = coordi.length;
@@ -186,8 +185,8 @@ export default function PathDrawer() {
     }
 
     const clickCoordi = function(lat, lng) {
-        // setCenter(new navermaps.LatLng(lat, lng))
-        // setFocus(new navermaps.LatLng(lat, lng))
+        setCenter({lat : lat, lng : lng})
+        setFocus({lat : lat, lng : lng})
     }
 
     // path의 좌표에 포커스되었을 때
@@ -206,14 +205,11 @@ export default function PathDrawer() {
         setNowIdf(idf)
         setNowOption(options[idf])
     }
+
     const setMapTypeFunc = function(val) {
         if (val != mapType) {
             setMapType(val);
         }
-    }
-
-    const maprightClick = function(event) {
-        console.log(event);
     }
 
     const handleResize = function() {
@@ -236,17 +232,32 @@ export default function PathDrawer() {
                     height : contentHeight
                 }}
             >
-                <NavermapsProvider ncpClientId='an7y5ntcz5' >
-                    <MapDiv style={{width : '100%', height: '100%'}}>
-                        <NaverMapComp />
-                    </MapDiv>
-                </NavermapsProvider>
+                <LoadScript
+                    googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
+                >
+                    <GoogleMap
+                        mapContainerStyle={{width : '100%', height: '100%'}}
+                        center={center}
+                        zoom={zoom}
+                    >
+                        {
+                            idfs.map((idf, idx) => (
+                                idf == nowIdf ? <></>
+                                : <LineComponent key={idx} option={options[idf]} />
+                            ))
+                        }
+
+                        <LineComponent option={nowOption} />
+                        
+                        <CircleF center={focus} options={focusOption} />
+                    </GoogleMap>
+                </LoadScript>
             </div>
 
-            <Button className={`absolute left-2 top-2`} color={`primary_outline`} 
+            <Button className={`absolute left-2 top-2`} color={`primary`} 
                 clickEvent={() => router.push(`${relativePrefix}/pathDrawer/google`)} value="google"/>
-            <Button className={`absolute left-2 top-8`} color={`primary`} 
-                clickEvent={() => router.push(`${relativePrefix}/pathDrawer/naver`)} value="naver"/>
+            <Button className={`absolute left-2 top-8`} color={`primary_outline`} 
+                clickEvent={() => router.push(`${relativePrefix}/pathDrawer/naver`)} value="naver_"/>
 
             <div className=" absolute top-32 left-4 flex flex-col gap-2 basis-1/5 max-w-[260px] min-w-[230px] bg-white p-2 rounded shadow-md">
                 <PathInput className="bg-gray-100 p-2 h-50 rounded"
