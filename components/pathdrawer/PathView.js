@@ -15,7 +15,7 @@ export default function PathView({className, idfs, nowIdf, nowOption, setNowOpti
         label : 'EDIT',
         circleOption : { fillColor : '#AAAAAA', },
         lineOption : { strokeColor : '#AAAAAA', },
-        arrowOption : { strokeColor : '#AAAAAA', }
+        arrowOption :{ strokeColor : '#AAAAAA', }
     }
     
     const selectEdit = function() {

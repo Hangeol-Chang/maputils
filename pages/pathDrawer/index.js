@@ -9,6 +9,9 @@ import { Circle, CircleF, GoogleMap, LoadScript, Marker, MarkerF, Polyline, Poly
 // navermap options
 import { Container as MapDiv, NavermapsProvider, useNavermaps } from 'react-naver-maps'
 import NaverMapComp from "../../components/pathdrawer/naver/NaverMapComp";
+import GoogleMapComp from "../../components/pathdrawer/google/GoogleMapComp";
+import PathView from "../../components/pathdrawer/PathView2";
+import PathInput from "../../components/pathdrawer/PathInput2";
 
 
 export default function PathDrawer() {
@@ -38,22 +41,7 @@ export default function PathDrawer() {
                 <LoadScript
                     googleMapsApiKey="AIzaSyBkZS2y5XLGTz09p372w0MV4bQgeukEiiQ"
                 >
-                    {/* <GoogleMap
-                        mapContainerStyle={{width : '100%', height: '100%'}}
-                        center={center}
-                        zoom={zoom}
-                    >
-                        {
-                            idfs.map((idf, idx) => (
-                                idf == nowIdf ? <></>
-                                : <LineComponent key={idx} option={options[idf]} />
-                            ))
-                        }
-
-                        <LineComponent option={nowOption} />
-                        
-                        <CircleF center={focus} options={focusOption} />
-                    </GoogleMap> */}
+                    <GoogleMapComp />
                 </LoadScript>
             )
         }
@@ -80,14 +68,25 @@ export default function PathDrawer() {
                 <MapComp />
             </div>
 
-            {/* api 변경 버튼 */}
-            {
-                /* api 변경 버튼 */
-                ['google', 'naver'].map((prov, idx) => (
-                    <Button className={`absolute left-2 top-${idx*8 + 2} w-16`} color={ mapProvider == prov ? `primary` : `primary_outline`} 
-                        clickEvent={ () => setMapProvider(prov) } value={prov} />
-                ))
-            }
+            { /* api 변경 버튼 */
+            ['google', 'naver'].map((prov, idx) => (
+                <Button className={`absolute top-14 left-${idx*18 + 2} w-16`} color={ mapProvider == prov ? `primary` : `primary_outline`} 
+                    clickEvent={ () => setMapProvider(prov) } value={prov} />
+            ))}
+
+            {/* side menu */}
+            <div className={`
+                    absolute top-32 left-4
+                    flex flex-col gap-2 basis-1/5
+                    max-w-[260px] min-w-[230px] 
+                    bg-white p-2 rounded shadow-md"
+                `}
+            >
+                <PathInput className="bg-gray-100 p-2 h-50 rounded" />
+                <PathView className="rounded max-h-full bg-white" />
+            </div>
+
+            
         </div>
     )
 }
